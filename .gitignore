@@ -31,10 +31,7 @@ local.properties
 
 # node.js
 #
-!/node_modules/@types/teaset/index.d.ts
-
 node_modules/
-!/node_modules/@types/teaset/index.d.ts
 npm-debug.log
 yarn-error.log
 

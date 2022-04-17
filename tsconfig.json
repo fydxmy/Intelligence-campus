@@ -15,15 +15,6 @@
     "esModuleInterop": true,
     "skipLibCheck": false,
     "resolveJsonModule": true,
-    // "paths": {
-    //   "@/*": ["./src/*"],
-    //   "@utils/*": ["./src/utils/*"],
-    //   "@screen/*": ["./src/screen/*"],
-    //   // "@components/*": ["src/components/*"],
-    //   // "@style/*": ["src/style/*"],
-    //   // "@router/*": ["src/router/*"],
-    //   // "@store/*": ["src/store/*"]
-    // }
   },
   "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"]
 }
