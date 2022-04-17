@@ -1,0 +1,7 @@
+build
+coverage
+node_modules
+android
+ios
+__tests__
+commitlint.config.js
