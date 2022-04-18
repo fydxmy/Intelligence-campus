@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
 import XmyNav from '../../../../components/xmyNav';
-import XmyIconFont from '../../../../components/xmyIconFont';
+import XmyIconFont from '../../../../components/IconFont';
 
 import { bgColordise } from '../../../../res/colorMap';
 import { pxToDp } from '../../../../utils';

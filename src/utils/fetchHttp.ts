@@ -1,6 +1,6 @@
 import qs from 'qs';
-import { useMemo, useState } from 'react';
 import { BASE_URI } from '../config/index';
+import { store } from '../store';
 
 interface Config extends RequestInit {
   reqMethod: string;
@@ -27,7 +27,7 @@ export const fetchHttp = (
     method: reqMethod,
     headers: {
       Accept: '*/*',
-      Authorization: token ? `Bearer ${token}` : '',
+      Authorization: token ?? store.getState().authToken.token,
       'Content-Type': 'application/json;charset=utf-8',
       ...customHeaders,
     },
@@ -43,9 +43,10 @@ export const fetchHttp = (
     }
   }
   return fetch(`${BASE_URI}${endpoint}`, config).then(async (response) => {
-    if (response.status === 401) {
-      console.log('请重新登录');
-    }
+    // if (response.status === 401) {
+    //   Toast.warning('登录信息失效');
+    // }
+    console.log(response.ok, 'response.okresponse.okresponse.ok');
     const data = await response.json();
     if (response.ok) {
       return data.data;
@@ -53,19 +54,4 @@ export const fetchHttp = (
       return Promise.reject(data);
     }
   });
-};
-
-export const useFetchHttp = () => {
-  const [loading, setLoading] = useState(false);
-  const fetchRun = (promise: Promise<any>) => {
-    setLoading(true);
-    return promise.finally(() => {
-      setLoading(false);
-    });
-  };
-  return useMemo(
-    () => [loading, fetchRun] as const,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
 };

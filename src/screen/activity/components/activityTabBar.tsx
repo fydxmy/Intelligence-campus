@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import XmyIconFont from '../../../components/xmyIconFont';
+import XmyIconFont from '../../../components/IconFont';
 import { pxToDp } from '../../../utils';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { userInfoType } from '../../../types/requsetDataType';

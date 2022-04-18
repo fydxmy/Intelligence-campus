@@ -4,7 +4,6 @@ import XmyNav from '../../components/xmyNav';
 import { bgColordise } from '../../res/colorMap';
 import { Button } from 'react-native-elements';
 import { validatePassword, pxToDp } from '../../utils';
-import { useToast } from 'react-native-styled-toast';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 interface RegisterPropsType extends NativeStackScreenProps<any> {}
@@ -13,14 +12,12 @@ export default function Register(props: RegisterPropsType) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [againPassword, setAgainPassword] = useState('');
-  const { toast } = useToast();
   const registerHandler = () => {
     sendRegisterInfoHandler();
   };
   const sendRegisterInfoHandler = async () => {
     const passwordValid = validatePassword(password);
     if (!passwordValid) {
-      toast({ message: '密码格式不正确' });
       setPassword('');
       return;
     }

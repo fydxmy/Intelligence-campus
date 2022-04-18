@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StatusBar, Image, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import { pxToDp } from '../../utils';
-import XmyIconFont from '../../components/xmyIconFont';
+import XmyIconFont from '../../components/IconFont';
 import { AVATAR_URI } from '../../utils/pathMap';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';

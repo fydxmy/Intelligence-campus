@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StatusBar,
-  TouchableOpacity,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { View, Text, StatusBar, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { pxToDp } from '../utils/stylesKits';
-import XmyIconFont from './xmyIconFont';
+import XmyIconFont from './IconFont';
 
 const statusBarHeight = StatusBar.currentHeight;
 
@@ -27,11 +20,7 @@ interface XmyNavProps {
 export default function XmyNav(props: XmyNavProps) {
   return (
     <View style={{ marginTop: statusBarHeight, ...props }}>
-      <StatusBar
-        backgroundColor="transparent"
-        translucent={true}
-        barStyle={props.StatusBarColor}
-      />
+      <StatusBar backgroundColor="transparent" translucent={true} barStyle={props.StatusBarColor} />
       <View
         style={{
           flexDirection: 'row',
@@ -69,13 +58,9 @@ export default function XmyNav(props: XmyNavProps) {
             </Text>
           </View>
         </TouchableOpacity>
-        <Text style={{ fontSize: pxToDp(18), ...props.centerContentStyle }}>
-          {props.centerContent}
-        </Text>
+        <Text style={{ fontSize: pxToDp(18), ...props.centerContentStyle }}>{props.centerContent}</Text>
 
-        {props.leftDOM || (
-          <Text style={{ fontSize: pxToDp(18) }}>{props.leftContent}</Text>
-        )}
+        {props.leftDOM || <Text style={{ fontSize: pxToDp(18) }}>{props.leftContent}</Text>}
       </View>
     </View>
   );

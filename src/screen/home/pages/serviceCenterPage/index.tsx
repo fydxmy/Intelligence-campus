@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import { pxToDp } from '../../../../utils/stylesKits';
 import XmyNav from '../../../../components/xmyNav';
-import XmyIconFont from '../../../../components/xmyIconFont';
+import XmyIconFont from '../../../../components/IconFont';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 interface ServiceCenterPagePropsType extends NativeStackScreenProps<any> {}
 export const ServiceCenterPage = (props: ServiceCenterPagePropsType) => {

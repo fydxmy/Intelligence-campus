@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StatusBar, Image } from 'react-native';
 import XmyNav from '../../../../components/xmyNav';
-import XmyIconFont from '../../../../components/xmyIconFont';
+import XmyIconFont from '../../../../components/IconFont';
 import { bgColordise } from '../../../../res/colorMap';
 import HeaderImageScrollView from 'react-native-image-header-scroll-view';
 import { pxToDp } from '../../../../utils';

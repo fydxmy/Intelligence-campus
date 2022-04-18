@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
-import { ToastProvider } from 'react-native-styled-toast';
 import { store } from './src/store';
 import Nav from './src/stackNavigator';
 import SplashScreen from 'react-native-splash-screen';
-import theme from './theme';
 import { useRef } from 'react';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from './src/components/ToastConfig';
 
 export default () => {
   let timer = useRef<NodeJS.Timeout>();
@@ -23,12 +22,8 @@ export default () => {
   return (
     <View style={{ flex: 1 }}>
       <Provider store={store}>
-        {/* 做弹出层的react-native-styled-toast定义主题 */}
-        <ThemeProvider theme={theme}>
-          <ToastProvider maxToasts={3}>
-            <Nav />
-          </ToastProvider>
-        </ThemeProvider>
+        <Nav />
+        <Toast topOffset={70} position="top" type="error" config={toastConfig} />
       </Provider>
     </View>
   );

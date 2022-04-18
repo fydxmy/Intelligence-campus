@@ -1,2 +1,2 @@
-export * from './xmyIconFont';
+export * from './IconFont';
 export * from './xmyNav';

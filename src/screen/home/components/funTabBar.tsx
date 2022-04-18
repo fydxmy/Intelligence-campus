@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native';
-import XmyIconFont from '../../../components/xmyIconFont';
+import XmyIconFont from '../../../components/IconFont';
 import { pxToDp } from '../../../utils';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';

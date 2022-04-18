@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import XmyIconFont from '../../../components/xmyIconFont';
+import XmyIconFont from '../../../components/IconFont';
 import { pxToDp } from '../../../utils';
 import { Carousel } from 'teaset';
 

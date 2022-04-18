@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { View, Text } from 'react-native';
-import XmyIconFont from '../../../../components/xmyIconFont';
+import XmyIconFont from '../../../../components/IconFont';
 import XmyNav from '../../../../components/xmyNav';
 import { pxToDp } from '../../../../utils';
 

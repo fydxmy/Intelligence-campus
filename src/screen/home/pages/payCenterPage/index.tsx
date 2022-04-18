@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import XmyNav from '../../../../components/xmyNav';
-import XmyIconFont from '../../../../components/xmyIconFont';
+import XmyIconFont from '../../../../components/IconFont';
 import { pxToDp } from '../../../../utils/stylesKits';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 interface PayCenterPageType extends NativeStackScreenProps<any> {}

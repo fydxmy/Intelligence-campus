@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, StatusBar, BackHandler, ToastAndroid } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
-import { Home } from './screen/home';
-import { My } from './screen/my';
-import ActivityPage from './screen/activity';
-import XmyIconFont from './components/xmyIconFont';
-import { pxToDp } from './utils';
-import { useFetchHttp } from './utils';
-
-import { VERIFY_URI } from './utils/pathMap';
-import { useToast } from 'react-native-styled-toast';
-import { userInfoType, verifyType } from './types/requsetDataType';
+// import { Home } from '../home';
+// import { My } from '../my';
+// import ActivityPage from '../activity';
+import IconFont from '../../components/IconFont';
+import { pxToDp } from '../../utils';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useDispatch } from 'react-redux';
-import { userInfoActions } from './store/userInfo.slice';
-import { ASuserInfoMap, getData } from './asyncStorage';
-import { asyncDispatch } from './types/asyncDispatch';
+// import { userInfoType } from '../../types/requsetDataType';
+// import { useDispatch } from 'react-redux';
+// import { userInfoActions } from '../../store/userInfo.slice';
+// import { ASuserInfoMap, getData } from '../../asyncStorage';
+// import { asyncDispatch } from '../../types/asyncDispatch';
+import { verifyToken } from './service';
+import Toast from '../../components/ToastConfig';
 
 interface TabBarPropsType extends NativeStackScreenProps<any, any> {}
 
@@ -24,37 +22,34 @@ export const TabBar = (props: TabBarPropsType) => {
     {
       selected: 'home',
       title: '首页',
-      renderIcon: () => <XmyIconFont name="shouye" style={{ fontSize: pxToDp(25), color: '#666666' }} />,
-      renderSelectedIcon: () => <XmyIconFont name="shouye" style={{ fontSize: pxToDp(25), color: '#1678ff' }} />,
-      component: <Home />,
+      renderIcon: () => <IconFont name="shouye" style={{ fontSize: pxToDp(25), color: '#666666' }} />,
+      renderSelectedIcon: () => <IconFont name="shouye" style={{ fontSize: pxToDp(25), color: '#1678ff' }} />,
+      component: <View />,
       onPress: () => setSelectedTab('home'),
     },
     {
       selected: 'activity',
       title: '素拓',
-      renderIcon: () => <XmyIconFont name="sutuo" style={{ fontSize: pxToDp(25), color: '#666666' }} />,
-      renderSelectedIcon: () => <XmyIconFont name="sutuo" style={{ fontSize: pxToDp(25), color: '#1678ff' }} />,
-      component: <ActivityPage />,
+      renderIcon: () => <IconFont name="sutuo" style={{ fontSize: pxToDp(25), color: '#666666' }} />,
+      renderSelectedIcon: () => <IconFont name="sutuo" style={{ fontSize: pxToDp(25), color: '#1678ff' }} />,
+      component: <View />,
       onPress: () => setSelectedTab('activity'),
     },
     {
       selected: 'my',
       title: '我的',
-      renderIcon: () => <XmyIconFont name="wode" style={{ fontSize: pxToDp(25), color: '#666666' }} />,
-      renderSelectedIcon: () => <XmyIconFont name="wode" style={{ fontSize: pxToDp(25), color: '#1678ff' }} />,
-      component: <My />,
+      renderIcon: () => <IconFont name="wode" style={{ fontSize: pxToDp(25), color: '#666666' }} />,
+      renderSelectedIcon: () => <IconFont name="wode" style={{ fontSize: pxToDp(25), color: '#1678ff' }} />,
+      component: <View />,
       onPress: () => setSelectedTab('my'),
     },
   ];
-  let lastBackPressed: number;
+  let lastBackPressed = useRef<number>(0);
   const [selectedTab, setSelectedTab] = useState('home');
   const StatusBarColor = ['my'].find((item) => item === selectedTab);
-  const client = useFetchHttp();
-  const { toast } = useToast();
-  const dispatch: asyncDispatch<userInfoType> = useDispatch();
+  // const dispatch: asyncDispatch<userInfoType> = useDispatch();
   useEffect(() => {
     authToken();
-    setStoreuserInfo();
     //再按一次退出应用
     BackHandler.addEventListener('hardwareBackPress', onBackAndroid);
     return () => {
@@ -64,26 +59,22 @@ export const TabBar = (props: TabBarPropsType) => {
   }, []);
 
   const authToken = async () => {
-    client(VERIFY_URI, { reqMethod: 'POST' }).then((data: verifyType) => {
-      if (!data.isLogin) {
-        toast({ message: '身份信息失效，请重新登录' });
-        props.navigation.navigate('Login');
-      }
-    });
-  };
-  const setStoreuserInfo = async () => {
-    const ASuserinfo = await getData(ASuserInfoMap.keyName);
-    if (ASuserinfo) {
-      dispatch(userInfoActions.setUserInfo(JSON.parse(ASuserinfo as string)));
-    }
+    verifyToken()
+      .then((res) => {})
+      .catch((res) => {
+        if (res.code !== 0) {
+          Toast.error('登录失败', '身份信息失效，请重新登录');
+          props.navigation.navigate('Login');
+        }
+      });
   };
   const onBackAndroid = () => {
     if (props.navigation.isFocused()) {
-      if (lastBackPressed && lastBackPressed + 2000 >= Date.now()) {
+      if (lastBackPressed.current && lastBackPressed.current + 2000 >= Date.now()) {
         BackHandler.exitApp();
         return false;
       }
-      lastBackPressed = Date.now();
+      lastBackPressed.current = Date.now();
       ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT);
       return true;
     }

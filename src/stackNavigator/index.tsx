@@ -4,7 +4,7 @@ import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/
 import Login from '../screen/Login';
 import Register from '../screen/Register';
 
-// import { TabBar } from './tabbar';
+import { TabBar } from '../screen/TabBar';
 // import { Setpage, StudyStatus, UserInfo, UserInfoEdit } from './pages/my/pages';
 // import { XmyWebView } from './pages/webView';
 
@@ -43,7 +43,7 @@ export default function Nav() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
         />
-        {/* <Stack.Screen name="Tabbar" component={TabBar} /> */}
+        <Stack.Screen name="TabBar" component={TabBar} />
         {/* <Stack.Screen
           name="XmyWebView"
           component={XmyWebView}
