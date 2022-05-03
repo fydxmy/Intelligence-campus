@@ -1,9 +1,9 @@
 // export const BASE_URI = 'http://localhost:3000/'192.168.43.53192.168.43.53
 
-// export const BASE_URI = "http://192.168.43.53:4000";
-// export const AVATAR_URI = "http://192.168.43.53:4000/";
-export const BASE_URI = 'http://112.124.20.104:4000';
-export const AVATAR_URI = 'http://112.124.20.104:4000/';
+export const BASE_URI = 'http:/、192.168.0.107:4000';
+export const AVATAR_URI = 'http://192.168.0.107:4000/';
+// export const BASE_URI = 'http://112.124.20.104:4000';
+// export const AVATAR_URI = 'http://112.124.20.104:4000/';
 
 // 登录
 export const LOGIN_URI = 'users/login';

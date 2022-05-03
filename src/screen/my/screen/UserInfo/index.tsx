@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StatusBar, Image } from 'react-native';
 import XmyNav from '../../../../components/xmyNav';
-import XmyIconFont from '../../../../components/IconFont';
+import IconFont from '../../../../components/IconFont';
 import { bgColordise } from '../../../../res/colorMap';
 import HeaderImageScrollView from 'react-native-image-header-scroll-view';
 import { pxToDp } from '../../../../utils';
-import { AVATAR_URI } from '../../../../utils/pathMap';
+import { AVATAR_URI } from '../../../../config/index';
 import { navigationType } from '../../../../types/navigationType';
 import { useSelector } from 'react-redux';
 import { storeUserInfo } from '../../../../store/userInfo.slice';
@@ -13,13 +13,13 @@ import { storeUserInfo } from '../../../../store/userInfo.slice';
 const statusBarHeight = StatusBar.currentHeight;
 interface UserInfoPropsType extends navigationType {}
 export const UserInfo = (props: UserInfoPropsType) => {
-  const userInfo = useSelector(storeUserInfo).useInfoData;
+  const userInfo = useSelector(storeUserInfo);
   return (
     <View style={{ flex: 1, backgroundColor: bgColordise }}>
       <HeaderImageScrollView
         maxHeight={pxToDp(232)}
         minHeight={statusBarHeight}
-        headerImage={require('../../../../res/imgs/20210906160401323001.jpg')}
+        headerImage={require('../../../../../public/imgs/20210402162616760001.jpg')}
         renderForeground={() => (
           <View
             style={{
@@ -85,8 +85,8 @@ export const UserInfo = (props: UserInfoPropsType) => {
                 marginTop: pxToDp(10),
               }}
             >
-              <XmyIconFont name="jgvr" style={{ fontSize: pxToDp(20), color: '#00b6ff' }} />
-              <Text style={{ marginLeft: pxToDp(6) }}>{userInfo?.officialCertification}</Text>
+              <IconFont name="jgvr" style={{ fontSize: pxToDp(20), color: '#00b6ff' }} />
+              {/* <Text style={{ marginLeft: pxToDp(6) }}>{userInfo?.officialCertification}</Text> */}
             </View>
 
             <View
@@ -98,7 +98,7 @@ export const UserInfo = (props: UserInfoPropsType) => {
                 marginTop: pxToDp(10),
               }}
             >
-              <XmyIconFont name="jgvr" style={{ fontSize: pxToDp(20) }} />
+              <IconFont name="jgvr" style={{ fontSize: pxToDp(20) }} />
               <Text style={{ marginLeft: pxToDp(6) }}>{userInfo?.gender == 1 ? '男' : '女'}</Text>
               <Text style={{ marginLeft: pxToDp(4) }}>{userInfo?.age}岁</Text>
               <Text
@@ -112,7 +112,7 @@ export const UserInfo = (props: UserInfoPropsType) => {
               >
                 |
               </Text>
-              <Text>{userInfo?.campus}</Text>
+              {/* <Text>{userInfo?.campus}</Text> */}
             </View>
 
             <View
@@ -124,7 +124,7 @@ export const UserInfo = (props: UserInfoPropsType) => {
                 marginTop: pxToDp(10),
               }}
             >
-              <XmyIconFont name="jgvr" style={{ fontSize: pxToDp(20) }} />
+              <IconFont name="jgvr" style={{ fontSize: pxToDp(20) }} />
               <Text style={{ marginLeft: pxToDp(6) }}>{userInfo?.selfIntroduction}</Text>
             </View>
           </View>

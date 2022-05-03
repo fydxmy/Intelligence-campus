@@ -14,11 +14,12 @@ const statusBarHeight = StatusBar.currentHeight;
 
 interface LoginPropsType extends NativeStackScreenProps<any> {}
 export default function Login(props: LoginPropsType) {
-  const [studentId, setStudentId] = useState('20180210012');
+  const [studentId, setStudentId] = useState('20180210014');
   const [passWord, setpassWord] = useState('123456');
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const loginHandler = () => {
+    console.log('aaaa');
     setLoading(true);
     userLogin({ studentId, passWord })
       .then((res) => {
@@ -28,6 +29,9 @@ export default function Login(props: LoginPropsType) {
           Toast.success('请求成功');
           props.navigation.navigate('TabBar');
         });
+      })
+      .catch(() => {
+        Toast.error('登录请求失败！');
       })
       .finally(() => {
         setLoading(false);

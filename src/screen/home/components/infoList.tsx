@@ -3,7 +3,8 @@ import { View, Text, TouchableWithoutFeedback, FlatList, SafeAreaView } from 're
 import { pxToDp } from '../../../utils/stylesKits';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { useFetchHttp } from '../../../utils';
+import { queryCampusNews } from '../services';
+import { CampusNewsItemType } from '../data';
 type infoDataItemType = {
   dateTime: string;
   infoId: number;
@@ -11,38 +12,36 @@ type infoDataItemType = {
   url: string;
 };
 
-type getInfoDataType = {
-  list: infoDataItemType[];
-  total: number;
-};
-
 type navigationType = NativeStackScreenProps<{ XmyWebView: { url: string } }, 'XmyWebView'>['navigation'];
 
 interface InfoListProps {
-  url: string;
+  type: string;
 }
 export default function InfoList(props: InfoListProps) {
   const navigation: navigationType = useNavigation();
-  const client = useFetchHttp();
-  const [dataList, setDataList] = useState<infoDataItemType[]>([]);
-  const page = useRef(1);
+  const [dataList, setDataList] = useState<CampusNewsItemType[]>([]);
+  const pageNumber = useRef(1);
   useEffect(() => {
-    getHttpListData({ page: 1, size: 10 }).then((data) => setDataList(data.list));
+    queryCampusNews(props).then((res) => {
+      setDataList(res.list);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getHttpListData = (data: { page: number; size: number }) => {
-    return client(props.url, { reqMethod: 'GET', data });
+  const getHttpListData = (data: { pageSize: number; pageNumber: number }) => {
+    // return client(props.url, { reqMethod: 'GET', data });
+    return queryCampusNews({ ...props, ...data });
   };
 
   const onEndReachedHandler = async () => {
-    page.current += 1;
-    const sendData = { page: page.current, size: 10 };
-    const result: getInfoDataType = await getHttpListData(sendData);
+    pageNumber.current += 1;
+    const result = await getHttpListData({ pageNumber: pageNumber.current, pageSize: 10 });
+    const res = [...dataList, ...result.list];
     setDataList([...dataList, ...result.list]);
+    console.log(res.map((item) => item.id));
   };
 
-  const renderItem = (item: infoDataItemType) => {
+  const renderItem = (item: CampusNewsItemType) => {
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -50,7 +49,7 @@ export default function InfoList(props: InfoListProps) {
             url: 'http://wap.jxue.edu.cn/' + item.url,
           });
         }}
-        key={item.infoId}
+        key={item.id}
       >
         <View
           style={{
@@ -82,7 +81,7 @@ export default function InfoList(props: InfoListProps) {
         <FlatList
           data={dataList}
           renderItem={({ item }) => renderItem(item)}
-          keyExtractor={(item) => item.infoId.toString()}
+          keyExtractor={(item) => item.id.toString()}
           onEndReached={() => onEndReachedHandler()}
         />
       </SafeAreaView>

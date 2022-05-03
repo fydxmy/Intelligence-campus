@@ -1,44 +1,36 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '.';
-import { ASuserInfoMap, storeData } from '../asyncStorage';
-import { asyncDispatch } from '../types/asyncDispatch';
-import { userInfoType } from '../types/requsetDataType';
-import { useFetchHttp } from '../utils';
-import { USERINFO_URI } from '../utils/pathMap';
-
+import { RootState } from './index';
 interface initialStateType {
-  useInfoData: Partial<userInfoType>;
+  userInfo: Partial<{
+    age: number;
+    avatar: string;
+    gender: number;
+    id: number;
+    nickName: string;
+    selfIntroduction: string;
+    studentId: string;
+  }>;
 }
 const initialState: initialStateType = {
-  useInfoData: {},
+  userInfo: {},
 };
 
 export const userInfoSlice = createSlice({
   name: 'userInfoSlice',
   initialState,
   reducers: {
-    setUserInfo(state, action) {
-      state.useInfoData = { ...state.useInfoData, ...action.payload };
+    setUserInfo(
+      state,
+      action: {
+        payload: initialStateType['userInfo'];
+        type: string;
+      }
+    ) {
+      state.userInfo = { ...state.userInfo, ...action.payload };
     },
   },
 });
 
 export const storeUserInfo = (state: RootState) => {
-  return state.userInfo;
-};
-
-export const userInfoActions = userInfoSlice.actions;
-
-export const useSetUserInfo = () => {
-  const client = useFetchHttp();
-  const dispatch: asyncDispatch<userInfoType> = useDispatch();
-  return () => {
-    client(USERINFO_URI, { reqMethod: 'POST' }).then((data: userInfoType) => {
-      if (data) {
-        dispatch(userInfoActions.setUserInfo(data));
-        storeData(ASuserInfoMap.keyName, data);
-      }
-    });
-  };
+  return state.storeUserInfo.userInfo;
 };

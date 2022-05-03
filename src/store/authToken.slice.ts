@@ -1,3 +1,4 @@
+import { RootState } from './index';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: { token: string } = {
@@ -13,6 +14,6 @@ export const authTokenSlice = createSlice({
   },
 });
 
-// export const storeToken = (state: RootState) => {
-//   return state.authToken.token;
-// };
+export const storeToken = (state: RootState) => {
+  return state.authToken.token;
+};

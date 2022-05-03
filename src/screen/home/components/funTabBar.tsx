@@ -13,9 +13,9 @@ export const FunTabBar = () => {
       textContent: '江工VR',
       iconStyle: { color: '#fd600f' },
       onPress: () => {
-        navigation.navigate('XmyWebView', {
+        navigation.navigate('DynamicWebView', {
           url: 'https://720yun.com/t/9dvktbrlrfq?scene_id=77400713',
-          pageName: '江工VR',
+          pageName: <Text style={{ fontSize: pxToDp(18) }}>江工VR</Text>,
         });
       },
     },
@@ -43,9 +43,9 @@ export const FunTabBar = () => {
       textContent: '学习中心',
       iconStyle: { color: '#00b6ff' },
       onPress: () => {
-        navigation.navigate('XmyWebView', {
+        navigation.navigate('DynamicWebView', {
           url: 'https://www.icourse163.org',
-          pageName: '学习中心',
+          pageName: <Text style={{ fontSize: pxToDp(18) }}>学习中心</Text>,
         });
       },
     },

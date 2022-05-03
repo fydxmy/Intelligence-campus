@@ -1,16 +1,14 @@
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
-import { useToast } from 'react-native-styled-toast';
-import { ASauthTokenMap, storeData } from '../../../../asyncStorage';
+// import { ASauthTokenMap, storeData } from '../../../../asyncStorage';
 import XmyNav from '../../../../components/xmyNav';
 import { navigationType } from '../../../../types/navigationType';
 import { pxToDp } from '../../../../utils';
 
 export const Setpage = (props: navigationType) => {
-  const { toast } = useToast();
   const quitLogin = async () => {
-    await storeData(ASauthTokenMap.keyName, '');
-    toast({ message: '退出登录成功' });
+    // await storeData(ASauthTokenMap.keyName, '');
+    // toast({ message: '退出登录成功' });
     props.navigation.reset({
       index: 1,
       routes: [{ name: 'Login' }],

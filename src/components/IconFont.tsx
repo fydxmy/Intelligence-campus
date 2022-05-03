@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, TextStyle, StyleProp } from 'react-native';
+import iconMap from '../utils/iconMap';
 
 interface XmyIconFontProps {
   style?: StyleProp<TextStyle>;
@@ -10,7 +11,7 @@ export default function IconFont(props: XmyIconFontProps) {
   const { style = {}, onPress, name } = props;
   return (
     <Text onPress={onPress} style={[styles.text, style]}>
-      {name}
+      {iconMap[name]}
     </Text>
   );
 }

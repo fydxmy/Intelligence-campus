@@ -3,7 +3,7 @@ import { authTokenSlice } from './authToken.slice';
 import { userInfoSlice } from './userInfo.slice';
 export const rootReducer = {
   authToken: authTokenSlice.reducer,
-  userInfo: userInfoSlice.reducer,
+  storeUserInfo: userInfoSlice.reducer,
 };
 export const store = configureStore({
   reducer: rootReducer,

@@ -1,4 +1,4 @@
-export default {
+const iconMap = {
   fanhui: '\ue631',
   shezhi: '\ue617',
   saoma: '\ue614',
@@ -38,3 +38,4 @@ export default {
 
   qianjin: '\ue636',
 };
+export default iconMap;

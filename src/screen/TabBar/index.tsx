@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, StatusBar, BackHandler, ToastAndroid } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
-// import { Home } from '../home';
-// import { My } from '../my';
+import { Home } from '../home';
+import { My } from '../My';
 // import ActivityPage from '../activity';
 import IconFont from '../../components/IconFont';
 import { pxToDp } from '../../utils';
@@ -14,6 +14,10 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 // import { asyncDispatch } from '../../types/asyncDispatch';
 import { verifyToken } from './service';
 import Toast from '../../components/ToastConfig';
+import { ASauthToken, getData } from '../../asyncStorage';
+import { useDispatch } from 'react-redux';
+import { authTokenSlice } from '../../store/authToken.slice';
+import { userInfoSlice } from '../../store/userInfo.slice';
 
 interface TabBarPropsType extends NativeStackScreenProps<any, any> {}
 
@@ -24,7 +28,7 @@ export const TabBar = (props: TabBarPropsType) => {
       title: '首页',
       renderIcon: () => <IconFont name="shouye" style={{ fontSize: pxToDp(25), color: '#666666' }} />,
       renderSelectedIcon: () => <IconFont name="shouye" style={{ fontSize: pxToDp(25), color: '#1678ff' }} />,
-      component: <View />,
+      component: <Home />,
       onPress: () => setSelectedTab('home'),
     },
     {
@@ -36,18 +40,18 @@ export const TabBar = (props: TabBarPropsType) => {
       onPress: () => setSelectedTab('activity'),
     },
     {
-      selected: 'my',
+      selected: 'My',
       title: '我的',
       renderIcon: () => <IconFont name="wode" style={{ fontSize: pxToDp(25), color: '#666666' }} />,
       renderSelectedIcon: () => <IconFont name="wode" style={{ fontSize: pxToDp(25), color: '#1678ff' }} />,
-      component: <View />,
+      component: <My />,
       onPress: () => setSelectedTab('my'),
     },
   ];
   let lastBackPressed = useRef<number>(0);
   const [selectedTab, setSelectedTab] = useState('home');
   const StatusBarColor = ['my'].find((item) => item === selectedTab);
-  // const dispatch: asyncDispatch<userInfoType> = useDispatch();
+  const dispatch = useDispatch();
   useEffect(() => {
     authToken();
     //再按一次退出应用
@@ -59,14 +63,21 @@ export const TabBar = (props: TabBarPropsType) => {
   }, []);
 
   const authToken = async () => {
-    verifyToken()
-      .then((res) => {})
-      .catch((res) => {
-        if (res.code !== 0) {
-          Toast.error('登录失败', '身份信息失效，请重新登录');
-          props.navigation.navigate('Login');
-        }
-      });
+    // 获取token
+    getData(ASauthToken).then((token) => {
+      dispatch(authTokenSlice.actions.setToken(token));
+      verifyToken()
+        .then((res) => {
+          console.log(res.userInfo, 'resresres');
+          dispatch(userInfoSlice.actions.setUserInfo(res.userInfo));
+        })
+        .catch((res) => {
+          if (res.code !== 0) {
+            Toast.error('登录失败', '身份信息失效，请重新登录');
+            props.navigation.navigate('Login');
+          }
+        });
+    });
   };
   const onBackAndroid = () => {
     if (props.navigation.isFocused()) {

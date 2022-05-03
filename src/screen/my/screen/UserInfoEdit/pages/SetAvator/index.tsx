@@ -1,22 +1,20 @@
-import React, { Component, useState } from 'react';
-import { View, Text, TextInput, DeviceEventEmitter, Image, TouchableWithoutFeedback } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import XmyNav from '../../../../../../components/xmyNav';
-import { pxToDp, useFetchHttp } from '../../../../../../utils';
-import { AVATAR_URI } from '../../../../../../utils/pathMap';
+import { pxToDp } from '../../../../../../utils';
+import { AVATAR_URI } from '../../../../../../config/index';
 import Modal from 'react-native-modal';
 import ImagePicker from 'react-native-image-crop-picker';
 import { UPLOADIMGAVATOR_URL } from '../../../../../../utils/pathMap';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userInfoType } from '../../../../../../types/requsetDataType';
 import { useDispatch } from 'react-redux';
-import { userInfoActions } from '../../../../../../store/userInfo.slice';
 import { ASuserInfoMap, storeData } from '../../../../../../asyncStorage';
 
 interface SetAvatorPropsType extends NativeStackScreenProps<{ UserInfoEdit: { content: string } }, 'UserInfoEdit'> {}
 export const SetAvator = (props: SetAvatorPropsType) => {
   const [content, setContent] = useState(props.route.params.content);
   const [modalVisible, setModalVisible] = useState(false);
-  const client = useFetchHttp();
   const dispatch = useDispatch();
   const chooeseAvatorImg = async () => {
     setModalVisible(false);

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import XmyNav from '../../../../components/xmyNav';
 import XmyIconFont from '../../../../components/IconFont';
@@ -107,7 +107,7 @@ export const PayCenterPage = (props: PayCenterPageType) => {
               justifyContent: 'flex-start',
             }}
           >
-            {item1.tuition.map((item, index, array) => (
+            {item1.tuition.map((item) => (
               <View
                 style={{
                   height: pxToDp(120),

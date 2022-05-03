@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
 import XmyNav from '../../../../components/xmyNav';
 import XmyIconFont from '../../../../components/IconFont';
 
 import { bgColordise } from '../../../../res/colorMap';
 import { pxToDp } from '../../../../utils';
-import { AVATAR_URI } from '../../../../utils/pathMap';
+import { AVATAR_URI } from '../../../../config';
 import { storeUserInfo } from '../../../../store/userInfo.slice';
 import { useSelector } from 'react-redux';
 
 export const UserInfoEdit = (props: any) => {
-  const userInfo = useSelector(storeUserInfo).useInfoData;
+  const userInfo = useSelector(storeUserInfo);
   const userInfoList = [
     {
       id: 1,
@@ -22,8 +22,8 @@ export const UserInfoEdit = (props: any) => {
         });
       },
     },
-    { id: 2, title: '性别', content: userInfo.gender == 1 ? '男' : '女' },
-    { id: 3, title: '地区', content: userInfo.jiguan },
+    { id: 2, title: '性别', content: userInfo.gender === 1 ? '男' : '女' },
+    { id: 3, title: '地区', content: '' },
     {
       id: 4,
       title: '个性签名',
@@ -34,7 +34,7 @@ export const UserInfoEdit = (props: any) => {
         });
       },
     },
-    { id: 5, title: '电话', content: userInfo.phoneNumber },
+    { id: 5, title: '电话', content: '' },
   ];
   return (
     <View style={{ flex: 1, backgroundColor: bgColordise }}>

@@ -5,9 +5,9 @@ import { bgColordise } from '../../../../../../res/colorMap';
 import { Button } from 'react-native-elements';
 import { pxToDp } from '../../../../../../utils/stylesKits';
 import { USERINFOUPDATE_URL } from '../../../../../../utils/pathMap';
-import { useFetchHttp } from '../../../../../../utils';
+// import { useFetchHttp } from '../../../../../../utils';
 import { useDispatch } from 'react-redux';
-import { userInfoActions } from '../../../../../../store/userInfo.slice';
+// import { userInfoActions } from '../../../../../../store/userInfo.slice';
 import { ASuserInfoMap, storeData } from '../../../../../../asyncStorage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 

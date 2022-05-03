@@ -1,11 +1,15 @@
-import React from 'react';
-import { View, Text, StatusBar, Image, TouchableWithoutFeedback, StyleSheet } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { pxToDp } from '../../utils';
-import XmyIconFont from '../../components/IconFont';
-import { AVATAR_URI } from '../../utils/pathMap';
+import IconFont from '../../components/IconFont';
+import { AVATAR_URI } from '../../config/index';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { storeUserInfo } from '../../store/userInfo.slice';
+import styles from './style';
+import Alarm from '../../utils/svg/alarm.svg';
+import Male from '../../utils/svg/male.svg';
+import Female from '../../utils/svg/female.svg';
 
 export interface userInfoType {
   nickName: string;
@@ -18,15 +22,14 @@ export interface userInfoType {
   studentId: string;
   officialCertification: string;
 }
-const statusBarHeight = StatusBar.currentHeight;
 
-export const My = () => {
-  const detailList = [
+export function My() {
+  const property = useRef([
     { name: '素扩分', score: '110' },
     { name: '澡币A', score: '19.02' },
     { name: '澡币B', score: '12.62' },
-  ];
-  const menuList = [
+  ]);
+  const menuList = useRef([
     {
       icon: 'xueji',
       text: '学籍',
@@ -38,150 +41,85 @@ export const My = () => {
     { icon: 'shoucang', text: '收藏', iconStyle: { color: '#ffab17' } },
     { icon: 'kebiao', text: '课表', iconStyle: { color: '#2a84ff' } },
     { icon: 'chengji', text: '成绩', iconStyle: { color: '#2a84ff' } },
-  ];
+  ]);
 
   const navigation = useNavigation<CompositeNavigationProp<any, any>>();
-  const userInfo = useSelector(storeUserInfo).useInfoData;
+  const userInfo = useSelector(storeUserInfo);
   return (
-    <View style={{ flex: 1, backgroundColor: '#f5f5f5' }}>
-      {/* hearder  */}
-      <View style={{ backgroundColor: '#fff' }}>
-        {/* 设置icon */}
-        <View
-          style={{
-            marginTop: statusBarHeight,
-            height: pxToDp(50),
-            alignItems: 'flex-end',
-            justifyContent: 'center',
-            paddingRight: pxToDp(18),
-          }}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              width: pxToDp(90),
-            }}
-          >
-            <XmyIconFont style={{ color: '#333333', fontSize: pxToDp(25) }} name="saoma" />
-            <XmyIconFont
-              style={{ color: '#333333', fontSize: pxToDp(25) }}
-              name="shezhi"
-              onPress={() => navigation.navigate('Setpage')}
-            />
+    <View style={styles.page}>
+      <View style={styles.hearder}>
+        <View style={styles['nav-bar']}>
+          <View style={styles['nav-bar-right']}>
+            <Alarm width={25} height={25} />
           </View>
         </View>
-
-        <View
-          style={{
-            paddingLeft: pxToDp(22),
-            paddingBottom: pxToDp(30),
-            flexDirection: 'row',
-          }}
-        >
-          <TouchableWithoutFeedback
+        <View style={styles['user-card']}>
+          <TouchableOpacity
             onPress={() => {
               navigation.navigate('UserInfo');
             }}
           >
-            <View style={{ flexDirection: 'row', width: pxToDp(250) }}>
-              <View>
-                <Image
-                  source={{ uri: AVATAR_URI + userInfo.avatar }}
-                  style={{
-                    width: pxToDp(60),
-                    height: pxToDp(60),
-                    borderRadius: pxToDp(6),
-                  }}
-                />
-              </View>
-              <View
-                style={{
-                  paddingLeft: pxToDp(18),
-                  justifyContent: 'space-evenly',
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: pxToDp(22),
-                    fontWeight: '600',
-                    color: '#040404',
-                  }}
-                >
-                  {userInfo.nickName}
-                </Text>
+            <View style={styles['card-left']}>
+              <Image source={{ uri: AVATAR_URI + userInfo?.avatar }} style={styles['card-left-img']} />
+              <View style={styles['card-left-userinfo']}>
+                <Text style={styles['card-left-nickName']}>{userInfo?.nickName}</Text>
                 <Text>
-                  <Text style={{ color: '#333333' }}>
-                    {userInfo.gender === 1 ? '男' : userInfo.gender === 0 ? '女' : ''}
-                  </Text>
-                  <Text style={{ color: '#333333' }}>{userInfo.age} </Text>
-                  <Text style={{ color: '#333333' }}>{userInfo.campus}</Text>
+                  <View style={styles['card-left-sencondary']}>{userInfo?.gender === 1 ? <Male /> : <Female />}</View>
+                  <View>
+                    <Text style={styles['card-left-sencondaryText']}>{userInfo?.age} </Text>
+                  </View>
                 </Text>
               </View>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
 
-          <TouchableWithoutFeedback
-            onPress={() => {
-              navigation.navigate('UserInfoEdit');
-            }}
-          >
-            <View style={{ justifyContent: 'center', paddingLeft: pxToDp(30) }}>
-              <Text>编辑</Text>
-            </View>
-          </TouchableWithoutFeedback>
+          <View style={styles['card-right']}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('UserInfoEdit');
+              }}
+            >
+              <Text style={styles['card-right-button']}>编辑</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
       {/* 素拓分，造币 */}
-      <View
-        style={{
-          backgroundColor: '#fff',
-          height: pxToDp(80),
-          marginTop: pxToDp(10),
-          marginLeft: pxToDp(12),
-          marginRight: pxToDp(12),
-          borderRadius: pxToDp(6),
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-        }}
-      >
-        {detailList.map((item, index) => (
-          <TouchableWithoutFeedback
-            key={index}
-            onPress={() => {
-              navigation.navigate('XmyWebView', {
-                url: 'index.html',
-                pageName: 'index',
-                type: 'html',
-              });
-            }}
-          >
-            <View
-              style={{
-                width: 100,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#fff',
-                elevation: 7,
-                borderRadius: 5,
-                // shadowColor: 'black',
-                marginLeft: 10,
-                // shadowOpacity: 0.1,
-                // shadowRadius: StyleSheet.hairlineWidth,
-                // shadowOffset: {
-                //   height: StyleSheet.hairlineWidth,
-                //   width: 0,
-                // },
-                // zIndex: 1,
+      <View style={styles.property}>
+        <View style={styles['property-header']}>
+          <View>
+            <Text style={styles['property-title']}>我的资产</Text>
+          </View>
+        </View>
+        <View style={styles['property-body']}>
+          {property.current.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => {
+                navigation.navigate('XmyWebView', {
+                  url: 'index.html',
+                  pageName: 'index',
+                  type: 'html',
+                });
               }}
             >
-              <Text style={{ fontSize: pxToDp(19), color: '#333333' }}>{item.score}</Text>
-              <Text style={{ fontSize: pxToDp(12), color: '#333333' }}>{item.name}</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        ))}
+              <View
+                style={{
+                  width: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#fff',
+                  borderRadius: 5,
+                  marginLeft: 10,
+                }}
+              >
+                <Text style={{ fontSize: pxToDp(19), color: '#333333' }}>{item.score}</Text>
+                <Text style={{ fontSize: pxToDp(12), color: '#333333' }}>{item.name}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
       {/* 功能list */}
       <View
@@ -196,8 +134,8 @@ export const My = () => {
           paddingRight: pxToDp(14),
         }}
       >
-        {menuList.map((item, index) => (
-          <TouchableWithoutFeedback onPress={item.onPress} key={index}>
+        {menuList.current.map((item, index) => (
+          <TouchableOpacity onPress={item.onPress} key={index}>
             <View
               style={{
                 height: pxToDp(50),
@@ -215,7 +153,8 @@ export const My = () => {
                   alignItems: 'center',
                 }}
               >
-                <XmyIconFont style={{ fontSize: pxToDp(26), ...item.iconStyle }} name={item.icon} />
+                {/* <Text>{item.icon}</Text> */}
+                <IconFont style={{ fontSize: pxToDp(26), ...item.iconStyle }} name={item.icon} />
                 <Text
                   style={{
                     color: '#333333',
@@ -227,12 +166,12 @@ export const My = () => {
                 </Text>
               </View>
               <View>
-                <XmyIconFont style={{ color: '#cecece', fontSize: pxToDp(17) }} name="qianwang" />
+                <IconFont style={{ color: '#cecece', fontSize: pxToDp(17) }} name="qianwang" />
               </View>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         ))}
       </View>
     </View>
   );
-};
+}

@@ -62,19 +62,19 @@ const Toast = {
       props: { message, description },
     });
   },
-  error: function (message = '请求成功', description = '') {
+  error: function (message = '请求失败', description?: string) {
     ToastOld.show({
       type: 'error',
       props: { message, description },
     });
   },
-  warning: function (message = '请求成功', description = '') {
+  warning: function (message = '请求成功', description?: string) {
     ToastOld.show({
       type: 'warning',
       props: { message, description },
     });
   },
-  info: function (message = '请求成功', description = '') {
+  info: function (message = '请求成功', description?: string) {
     ToastOld.show({
       type: 'info',
       props: { message, description },
