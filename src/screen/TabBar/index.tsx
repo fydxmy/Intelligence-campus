@@ -40,7 +40,7 @@ export const TabBar = (props: TabBarPropsType) => {
       onPress: () => setSelectedTab('activity'),
     },
     {
-      selected: 'My',
+      selected: 'my',
       title: '我的',
       renderIcon: () => <IconFont name="wode" style={{ fontSize: pxToDp(25), color: '#666666' }} />,
       renderSelectedIcon: () => <IconFont name="wode" style={{ fontSize: pxToDp(25), color: '#1678ff' }} />,

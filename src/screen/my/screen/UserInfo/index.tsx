@@ -19,7 +19,7 @@ export const UserInfo = (props: UserInfoPropsType) => {
       <HeaderImageScrollView
         maxHeight={pxToDp(232)}
         minHeight={statusBarHeight}
-        headerImage={require('../../../../../public/imgs/20210402162616760001.jpg')}
+        headerImage={require('../../../../../public/imgs/20210406164057568001.jpg')}
         renderForeground={() => (
           <View
             style={{
@@ -86,7 +86,6 @@ export const UserInfo = (props: UserInfoPropsType) => {
               }}
             >
               <IconFont name="jgvr" style={{ fontSize: pxToDp(20), color: '#00b6ff' }} />
-              {/* <Text style={{ marginLeft: pxToDp(6) }}>{userInfo?.officialCertification}</Text> */}
             </View>
 
             <View

@@ -5,9 +5,9 @@ import Login from '../screen/Login';
 import Register from '../screen/Register';
 
 import { TabBar } from '../screen/TabBar';
-// import { UserInfo } from '../screen/My/screen/userInfo';
-import { UserInfoEdit } from '../screen/My/screen';
-// import { Setpage, StudyStatus, UserInfo, UserInfoEdit } from './pages/My/pages';
+import { UserInfo } from '../screen/My/screen/UserInfo';
+import { UserInfoEdit, StudyStatus } from '../screen/My/screen';
+// import { Setpage, , UserInfo, UserInfoEdit } from './pages/My/pages';
 import { XmyWebView } from '../screen/webView';
 import DynamicWebView from '../screen/webView/DynamicWebView';
 
@@ -20,11 +20,7 @@ import {
   WasherPage,
 } from '../screen/home/pages';
 
-// import {
-//   SetNickName,
-//   SetSelfIntroduction,
-//   SetAvator,
-// } from './pages/My/pages/userInfoEdit/pages';
+import { SetNickName, SetGender, SetSelfIntroduction, SetAvator } from '../screen/My/screen/UserInfoEdit/screen';
 
 // import {
 //   AuditDetailsPage,
@@ -47,13 +43,6 @@ export default function Nav() {
           }}
         />
         <Stack.Screen name="TabBar" component={TabBar} />
-        {/* <Stack.Screen
-          name="UserInfo"
-          component={UserInfo}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }}
-        /> */}
         <Stack.Screen
           name="XmyWebView"
           component={XmyWebView}
@@ -82,25 +71,16 @@ export default function Nav() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
         />
-        {/*
-        <Stack.Screen
-          name="Setpage"
-          component={Setpage}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }}
-        />
-        <Stack.Screen
-          name="StudyStatus"
-          component={StudyStatus}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }}
-        />
-
         <Stack.Screen
           name="SetNickName"
           component={SetNickName}
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="SetGender"
+          component={SetGender}
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
@@ -119,6 +99,32 @@ export default function Nav() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
         />
+        <Stack.Screen
+          name="UserInfo"
+          component={UserInfo}
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="StudyStatus"
+          component={StudyStatus}
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        {/*
+        <Stack.Screen
+          name="Setpage"
+          component={Setpage}
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+
+
+
+
         <Stack.Screen
           name="ActivityDetailsPage"
           component={ActivityDetailsPage}

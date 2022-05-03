@@ -14,14 +14,14 @@ const statusBarHeight = StatusBar.currentHeight;
 
 interface LoginPropsType extends NativeStackScreenProps<any> {}
 export default function Login(props: LoginPropsType) {
-  const [studentId, setStudentId] = useState('20180210014');
+  const [phoneNumber, setPhoneNumber] = useState('13697010905');
   const [passWord, setpassWord] = useState('123456');
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const loginHandler = () => {
     console.log('aaaa');
     setLoading(true);
-    userLogin({ studentId, passWord })
+    userLogin({ phoneNumber, passWord })
       .then((res) => {
         const token = res.token;
         dispatch(authTokenSlice.actions.setToken(token));
@@ -56,8 +56,8 @@ export default function Login(props: LoginPropsType) {
           <Text style={{ width: '30%', fontSize: pxToDp(18), color: '#262626' }}> 账号</Text>
           <View style={{ width: '70%' }}>
             <TextInput
-              onChangeText={setStudentId}
-              value={studentId}
+              onChangeText={setPhoneNumber}
+              value={phoneNumber}
               placeholder="手机号码"
               selectionColor="#262626"
               style={{
@@ -96,7 +96,7 @@ export default function Login(props: LoginPropsType) {
             title="登 录"
             buttonStyle={{ height: pxToDp(50), backgroundColor: '#1890ff' }}
             titleStyle={{ fontSize: pxToDp(18), color: '#ffffff' }}
-            disabled={!(studentId.length && passWord.length)}
+            disabled={!(phoneNumber.length && passWord.length)}
             loading={loading}
           />
         </View>

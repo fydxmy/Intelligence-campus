@@ -5,11 +5,14 @@ import { pxToDp } from '../../../../../../utils';
 import { AVATAR_URI } from '../../../../../../config/index';
 import Modal from 'react-native-modal';
 import ImagePicker from 'react-native-image-crop-picker';
-import { UPLOADIMGAVATOR_URL } from '../../../../../../utils/pathMap';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { userInfoType } from '../../../../../../types/requsetDataType';
 import { useDispatch } from 'react-redux';
-import { ASuserInfoMap, storeData } from '../../../../../../asyncStorage';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { uploadSingleFile } from '../../../../../../services';
+import { updateUserInfo } from '../../services';
+import { userInfoSlice } from '../../../../../../store/userInfo.slice';
+// import { UPLOADIMGAVATOR_URL } from '../../../../../../utils/pathMap';
+// import { userInfoType } from '../../../../../../types/requsetDataType';
+// import { ASuserInfoMap, storeData } from '../../../../../../asyncStorage';
 
 interface SetAvatorPropsType extends NativeStackScreenProps<{ UserInfoEdit: { content: string } }, 'UserInfoEdit'> {}
 export const SetAvator = (props: SetAvatorPropsType) => {
@@ -28,17 +31,13 @@ export const SetAvator = (props: SetAvatorPropsType) => {
     } catch (error) {}
 
     if (image) {
-      const res = await uploadAvatorImgSendHandler(image);
-      // if (res.data.isPass) {
-      //   setContent(res.data.userInfo.avatar)
-      //   // await LocalStorage.set(LSUserInfo, JSON.stringify(res.data.userInfo));
-      // }
+      uploadAvatorImgSendHandler(image);
     }
   };
 
   const uploadAvatorImgSendHandler = (image: any) => {
-    let formData = new FormData();
-    formData.append('imgAvator', {
+    const formData = new FormData();
+    formData.append('file', {
       // 本地图片的地址
       uri: image.path,
       // 图片的类型
@@ -46,16 +45,12 @@ export const SetAvator = (props: SetAvatorPropsType) => {
       // 图片的名称 file:///store/com/pic/dsf/d343.jpg
       name: image.path.split('/').pop(),
     });
-    client(UPLOADIMGAVATOR_URL, {
-      reqMethod: 'POST',
-      data: formData,
-      customHeaders: { 'Content-Type': 'multipart/form-data' },
-    }).then((data: { isPass: boolean; userInfo: userInfoType }) => {
-      if (data.isPass) {
-        dispatch(userInfoActions.setUserInfo(data.userInfo));
-        storeData(ASuserInfoMap.keyName, data.userInfo);
-        setContent(data.userInfo.avatar);
-      }
+    formData.append('fileType', 'userAvatar');
+    uploadSingleFile(formData, { 'Content-Type': 'multipart/form-data' }).then((fileRes) => {
+      setContent(fileRes.uri);
+      updateUserInfo({ avatar: fileRes.uri }).then((res) => {
+        dispatch(userInfoSlice.actions.setUserInfo(res.userInfo));
+      });
     });
   };
 

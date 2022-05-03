@@ -14,7 +14,7 @@ import Female from '../../utils/svg/female.svg';
 export interface userInfoType {
   nickName: string;
   avatar: string;
-  selfIntroduction: string | null;
+  selfIntroduction: string | undefined;
   gender: number;
   role: string;
   age: number;

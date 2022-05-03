@@ -8,7 +8,7 @@ const statusBarHeight = StatusBar.currentHeight;
 
 interface XmyNavProps {
   navStyle?: StyleProp<ViewStyle>;
-  StatusBarColor: 'default' | 'light-content' | 'dark-content';
+  StatusBarColor?: 'default' | 'light-content' | 'dark-content';
   LeftNode?: JSX.Element;
   rightNode?: JSX.Element;
   centerNode?: JSX.Element;

@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
 import XmyNav from '../../../../components/xmyNav';
 import XmyIconFont from '../../../../components/IconFont';
-
 import { bgColordise } from '../../../../res/colorMap';
 import { pxToDp } from '../../../../utils';
 import { AVATAR_URI } from '../../../../config';
@@ -22,11 +21,19 @@ export const UserInfoEdit = (props: any) => {
         });
       },
     },
-    { id: 2, title: '性别', content: userInfo.gender === 1 ? '男' : '女' },
-    { id: 3, title: '地区', content: '' },
+    {
+      id: 2,
+      title: '性别',
+      content: userInfo.gender === 1 ? '男' : '女',
+      onPress: () => {
+        props.navigation.navigate('SetGender', {
+          content: userInfo.gender,
+        });
+      },
+    },
     {
       id: 4,
-      title: '个性签名',
+      title: '一段介绍',
       content: userInfo.selfIntroduction,
       onPress: () => {
         props.navigation.navigate('SetSelfIntroduction', {
@@ -34,7 +41,6 @@ export const UserInfoEdit = (props: any) => {
         });
       },
     },
-    { id: 5, title: '电话', content: '' },
   ];
   return (
     <View style={{ flex: 1, backgroundColor: bgColordise }}>
