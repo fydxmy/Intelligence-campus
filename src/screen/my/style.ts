@@ -15,11 +15,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     paddingRight: pxToDp(18),
-    backgroundColor: 'pink',
+    // backgroundColor: 'pink',
   },
   'nav-bar-right': {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-end',
     width: pxToDp(90),
   },
   'user-card': {

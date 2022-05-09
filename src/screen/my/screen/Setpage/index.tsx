@@ -1,17 +1,20 @@
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
-// import { ASauthTokenMap, storeData } from '../../../../asyncStorage';
+import { ASauthToken, storeData } from '../../../../asyncStorage';
 import XmyNav from '../../../../components/xmyNav';
 import { navigationType } from '../../../../types/navigationType';
 import { pxToDp } from '../../../../utils';
+import Toast from '../../../../components/ToastConfig';
 
 export const Setpage = (props: navigationType) => {
   const quitLogin = async () => {
-    // await storeData(ASauthTokenMap.keyName, '');
-    // toast({ message: '退出登录成功' });
-    props.navigation.reset({
-      index: 1,
-      routes: [{ name: 'Login' }],
+    storeData(ASauthToken, '').then((res) => {
+      console.log(res);
+      props.navigation.reset({
+        index: 1,
+        routes: [{ name: 'Login' }],
+      });
+      Toast.success('退出登录成功');
     });
   };
   return (

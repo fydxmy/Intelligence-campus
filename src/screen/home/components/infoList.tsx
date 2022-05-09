@@ -66,7 +66,7 @@ export default function InfoList(props: InfoListProps) {
           }}
         >
           <View>
-            <Text style={{ fontSize: pxToDp(15), fontWeight: 'bold' }}>{item.title}</Text>
+            <Text style={{ fontSize: pxToDp(15), fontWeight: 'bold', color: '#333333' }}>{item.title}</Text>
           </View>
           <View style={{ alignSelf: 'flex-end', paddingRight: pxToDp(20) }}>
             <Text style={{ color: '#444444' }}>{item.dateTime}</Text>

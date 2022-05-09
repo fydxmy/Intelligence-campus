@@ -20,22 +20,22 @@
   ├── ios                         # ios 安卓端依赖
   ├── node_modules                # 项目依赖
   ├── src
-      └── asyncStorage                         # 数据持久化本地存储
-      └── components                           # 业务通用组件
-      └── config                               # 配置
-      └── screen                               # 页面
-      └── stackNavigator                       # 页面导航配置
-      └── store                                # redux 全局状态管理
-      └── utils                                # 公共方法
-      └── index.js                             # 项目入口文件
-      └── App.tsx                              # 根页面
-      └── tabbar.tsx                           # tabbar页面
-      └── CHANGELOG.md                         # 项目版本依赖
-      └── .prettierrc.js                       # prettier配置
-      └── .eslintrc.js                         # eslintr配置
-      └── commitlint.config.js                 # git提交规范配置
-      └── .editorconfig                        # editor配置
-      └── babel.config.js                      # 代码打包配置
+      └── asyncStorage            # 数据持久化本地存储
+      └── components              # 业务通用组件
+      └── config                  # 配置
+      └── screen                  # 页面
+      └── stackNavigator          # 页面导航配置
+      └── store                   # redux 全局状态管理
+      └── utils                   # 公共方法
+      └── index.js                # 项目入口文件
+      └── App.tsx                 # 根页面
+      └── tabbar.tsx              # tabbar页面
+  ├── CHANGELOG.md                # 项目版本依赖
+  ├── .prettierrc.js              # prettier配置
+  ├── .eslintrc.js                # eslintr配置
+  ├── commitlint.config.js        # git提交规范配置
+  ├── .editorconfig               # editor配置
+  ├── babel.config.js             # 代码打包配置
 ```
 
 ## git 提交规范

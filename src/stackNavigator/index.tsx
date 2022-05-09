@@ -6,7 +6,7 @@ import Register from '../screen/Register';
 
 import { TabBar } from '../screen/TabBar';
 import { UserInfo } from '../screen/My/screen/UserInfo';
-import { UserInfoEdit, StudyStatus } from '../screen/My/screen';
+import { UserInfoEdit, StudyStatus, Setpage } from '../screen/My/screen';
 // import { Setpage, , UserInfo, UserInfoEdit } from './pages/My/pages';
 import { XmyWebView } from '../screen/webView';
 import DynamicWebView from '../screen/webView/DynamicWebView';
@@ -113,7 +113,7 @@ export default function Nav() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
         />
-        {/*
+
         <Stack.Screen
           name="Setpage"
           component={Setpage}
@@ -121,6 +121,8 @@ export default function Nav() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
         />
+        {/*
+
 
 
 

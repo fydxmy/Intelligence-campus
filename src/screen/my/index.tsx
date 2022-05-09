@@ -7,7 +7,6 @@ import { CompositeNavigationProp, useNavigation } from '@react-navigation/native
 import { useSelector } from 'react-redux';
 import { storeUserInfo } from '../../store/userInfo.slice';
 import styles from './style';
-import Alarm from '../../utils/svg/alarm.svg';
 import Male from '../../utils/svg/male.svg';
 import Female from '../../utils/svg/female.svg';
 
@@ -50,7 +49,22 @@ export function My() {
       <View style={styles.hearder}>
         <View style={styles['nav-bar']}>
           <View style={styles['nav-bar-right']}>
-            <Alarm width={25} height={25} />
+            <View
+              style={{
+                height: pxToDp(50),
+                width: pxToDp(50),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <IconFont
+                name="shezhi"
+                style={{ fontSize: pxToDp(26) }}
+                onPress={() => {
+                  navigation.navigate('Setpage');
+                }}
+              />
+            </View>
           </View>
         </View>
         <View style={styles['user-card']}>
