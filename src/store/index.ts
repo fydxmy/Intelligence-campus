@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { authTokenSlice } from './authToken.slice';
+import { studentStatusSlice } from './studentStatus.slice';
 import { userInfoSlice } from './userInfo.slice';
 export const rootReducer = {
   authToken: authTokenSlice.reducer,
   storeUserInfo: userInfoSlice.reducer,
+  studentStatusSlice: studentStatusSlice.reducer,
 };
 export const store = configureStore({
   reducer: rootReducer,

@@ -26,7 +26,7 @@ export default function Login(props: LoginPropsType) {
         const token = res.token;
         dispatch(authTokenSlice.actions.setToken(token));
         storeData(ASauthToken, token).then(() => {
-          props.navigation.navigate('TabBar');
+          props.navigation.replace('TabBar');
         });
       })
       .catch(() => {

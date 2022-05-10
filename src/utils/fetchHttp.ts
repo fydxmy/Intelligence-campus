@@ -43,10 +43,8 @@ export const fetchHttp = (
     }
   }
   return fetch(`${BASE_URI}${endpoint}`, config).then(async (response) => {
-    // if (response.status === 401) {
-    //   Toast.warning('登录信息失效');
-    // }
-    console.log(response.ok, 'response.okresponse.okresponse.ok');
+    if (response.status === 401) {
+    }
     const data = await response.json();
     if (response.ok) {
       return data.data;

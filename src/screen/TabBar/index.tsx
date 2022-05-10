@@ -7,22 +7,19 @@ import ActivityPage from '../activity';
 import IconFont from '../../components/IconFont';
 import { pxToDp } from '../../utils';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-// import { userInfoType } from '../../types/requsetDataType';
-// import { useDispatch } from 'react-redux';
-// import { userInfoActions } from '../../store/userInfo.slice';
-// import { ASuserInfoMap, getData } from '../../asyncStorage';
-// import { asyncDispatch } from '../../types/asyncDispatch';
 import { verifyToken } from './service';
 import Toast from '../../components/ToastConfig';
 import { ASauthToken, getData } from '../../asyncStorage';
 import { useDispatch } from 'react-redux';
 import { authTokenSlice } from '../../store/authToken.slice';
 import { userInfoSlice } from '../../store/userInfo.slice';
+import { queryStudentStatus } from '../My/screen/StudyStatus/services';
+import { studentStatusSlice } from '../../store/studentStatus.slice';
 
 interface TabBarPropsType extends NativeStackScreenProps<any, any> {}
 
 export const TabBar = (props: TabBarPropsType) => {
-  const tabBarList = [
+  const tabBarList = useRef([
     {
       selected: 'home',
       title: '首页',
@@ -47,7 +44,7 @@ export const TabBar = (props: TabBarPropsType) => {
       component: <My />,
       onPress: () => setSelectedTab('my'),
     },
-  ];
+  ]);
   let lastBackPressed = useRef<number>(0);
   const [selectedTab, setSelectedTab] = useState('home');
   const StatusBarColor = ['my'].find((item) => item === selectedTab);
@@ -68,8 +65,10 @@ export const TabBar = (props: TabBarPropsType) => {
       dispatch(authTokenSlice.actions.setToken(token));
       verifyToken()
         .then((res) => {
-          console.log(res.userInfo, 'resresres');
           dispatch(userInfoSlice.actions.setUserInfo(res.userInfo));
+          queryStudentStatus().then((res) => {
+            dispatch(studentStatusSlice.actions.setStudentStatus(res.studentStatus));
+          });
         })
         .catch((res) => {
           if (res.code !== 0) {
@@ -98,7 +97,7 @@ export const TabBar = (props: TabBarPropsType) => {
         barStyle={StatusBarColor ? 'dark-content' : 'light-content'}
       />
       <TabNavigator tabBarStyle={{ backgroundColor: '#fafbff', height: pxToDp(56) }}>
-        {tabBarList.map((item, index) => {
+        {tabBarList.current.map((item, index) => {
           return (
             <TabNavigator.Item
               selected={selectedTab === item.selected}

@@ -76,7 +76,7 @@ export const UserInfo = (props: UserInfoPropsType) => {
         <View style={{ backgroundColor: '#ffffff' }}>
           {/* 用户信息 */}
           <View style={{ paddingLeft: pxToDp(18), paddingRight: pxToDp(16) }}>
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 height: pxToDp(30),
@@ -86,7 +86,7 @@ export const UserInfo = (props: UserInfoPropsType) => {
               }}
             >
               <IconFont name="jgvr" style={{ fontSize: pxToDp(20), color: '#00b6ff' }} />
-            </View>
+            </View> */}
 
             <View
               style={{
@@ -98,9 +98,9 @@ export const UserInfo = (props: UserInfoPropsType) => {
               }}
             >
               <IconFont name="jgvr" style={{ fontSize: pxToDp(20) }} />
-              <Text style={{ marginLeft: pxToDp(6) }}>{userInfo?.gender == 1 ? '男' : '女'}</Text>
+              <Text style={{ marginLeft: pxToDp(6) }}>{userInfo?.gender === 1 ? '男' : '女'}</Text>
               <Text style={{ marginLeft: pxToDp(4) }}>{userInfo?.age}岁</Text>
-              <Text
+              {/* <Text
                 style={{
                   marginLeft: pxToDp(6),
                   color: '#b0b2bf',
@@ -110,7 +110,7 @@ export const UserInfo = (props: UserInfoPropsType) => {
                 }}
               >
                 |
-              </Text>
+              </Text> */}
               {/* <Text>{userInfo?.campus}</Text> */}
             </View>
 

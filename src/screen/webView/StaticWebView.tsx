@@ -7,6 +7,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
 import { storeUserInfo } from '../../store/userInfo.slice';
 import { storeToken } from '../../store/authToken.slice';
+import { storeStudentStatus } from '../../store/studentStatus.slice';
 type RootStackParamList = {
   Profile: { pageName?: JSX.Element; uri: string };
 };
@@ -37,7 +38,8 @@ export default function StaticWebView(props: Props) {
   }, []);
   const token = useSelector(storeToken);
   const userInfo = JSON.stringify(useSelector(storeUserInfo));
-  const injectedJavaScriptStr = `localStorage.setItem('token', '${token}');localStorage.setItem('userInfo', '${userInfo}');`;
+  const studentStatus = JSON.stringify(useSelector(storeStudentStatus));
+  const injectedJavaScriptStr = `localStorage.setItem('token', '${token}');localStorage.setItem('userInfo', '${userInfo}');localStorage.setItem('studentStatus', '${studentStatus}');`;
   console.log(injectedJavaScriptStr);
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>

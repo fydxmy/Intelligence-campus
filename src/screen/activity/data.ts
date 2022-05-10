@@ -1,0 +1,23 @@
+export type ActivityListItemType = {
+  id: number;
+  title: string;
+  introduce: string;
+  startTime: string;
+  endTime: string;
+  imgUrl: string;
+  grade: number;
+  rankName: string;
+  rankId: number;
+  stStatus: number;
+  location: string;
+  organization: string;
+  initiator: string;
+  canNumber: number;
+  stalreadyNumber?: any;
+  inishNumber?: any;
+  signWay: string;
+  auditId?: any;
+  auditName?: any;
+  updatedAt: Date;
+  createdAt: Date;
+};

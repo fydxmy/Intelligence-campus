@@ -1,34 +1,56 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Text, View, StatusBar, TouchableWithoutFeedback, SafeAreaView, FlatList, Image } from 'react-native';
 import { bgColordise } from '../../res/colorMap';
-import { pxToDp } from '../../utils'; // useFetchHttp
+import { pxToDp } from '../../utils';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-// import { ACTIVITYLIST_URL, AVATAR_URI } from '../../utils/pathMap';
 import { AVATAR_URI } from '../../config';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { storeUserInfo } from '../../store/userInfo.slice';
-import { activityDataType } from '../../types/requsetDataType';
 import { ActivityTabBar } from './components/ActivityTabBar';
+import { queryActivity } from './services';
+import { ActivityListItemType } from './data';
 
+type NewActivityListItemType = ActivityListItemType & {
+  canState: number;
+};
 const statusBarHeight = StatusBar.currentHeight;
-const ActivityPage = () => {
+export default function ActivityPage() {
   const navigation = useNavigation<CompositeNavigationProp<any, any>>();
-  const userInfo = useSelector(storeUserInfo).useInfoData;
-  const [activityDataList, setActivityDataList] = useState<activityDataType['list'] | undefined>(undefined);
-  // const client = useFetchHttp();
-  const [sendData, setSendData] = useState({ page: 1, size: 10 });
+  const userInfo = useSelector(storeUserInfo);
+  const [activityDataList, setActivityDataList] = useState<NewActivityListItemType[]>([]);
+  const pageNumberValue = useRef(1);
   useEffect(() => {
-    // getActivityData({ page: 1, size: 10 }).then((data: activityDataType) => {
-    //   if (!activityDataList) {
-    //     setActivityDataList(data.list);
-    //   }
-    // });
+    queryActivity({ pageNumber: 1, pageSize: 10, stStatus: 1 }).then((res) => {
+      setActivityDataList(currentStateTran(res.list));
+    });
   }, []);
-
-  // const getActivityData = (sendData: { page: number; size: number }) =>
-  //   client(ACTIVITYLIST_URL, { reqMethod: 'GET', data: sendData });
-  const renderItem = ({ item }: { item: activityDataType['list'][0] }) => {
+  const onEndReachedHandler = () => {
+    queryActivity({ pageNumber: pageNumberValue.current + 1, pageSize: 10, stStatus: 1 }).then((res) => {
+      pageNumberValue.current = pageNumberValue.current + 1;
+      setActivityDataList(currentStateTran([...activityDataList, ...res.list]));
+    });
+  };
+  const currentStateTran = (data: ActivityListItemType[]) => {
+    const currentTimeTamp = new Date().getTime();
+    return data.map((item) => {
+      const startTimeTamp = new Date(item.startTime).getTime();
+      const endTimeTamp = new Date(item.endTime).getTime();
+      let canState = 0; // 0 不可参与、 1可以报名、2可签到、3、可签退
+      // 86400000
+      if (startTimeTamp - 86400000 > currentTimeTamp) {
+        canState = 1;
+      }
+      if (startTimeTamp - 1800 > currentTimeTamp || startTimeTamp + 1800 < currentTimeTamp) {
+        canState = 2;
+      }
+      if (endTimeTamp - 1800 > currentTimeTamp || endTimeTamp + 1800 < currentTimeTamp) {
+        canState = 3;
+      }
+      return { ...item, canState };
+    });
+  };
+  const renderItem = ({ item }: { item: NewActivityListItemType }) => {
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -37,41 +59,50 @@ const ActivityPage = () => {
       >
         <View
           style={{
-            backgroundColor: '#fff',
+            backgroundColor: '#ffffff',
             marginBottom: pxToDp(10),
-            flexDirection: 'row',
+            paddingLeft: pxToDp(12),
+            paddingRight: pxToDp(12),
+            paddingTop: pxToDp(10),
+            paddingBottom: pxToDp(10),
             borderRadius: pxToDp(6),
-            padding: pxToDp(10),
-            alignItems: 'center',
+            borderBottomWidth: pxToDp(1),
             borderColor: '#eee',
-            borderBottomWidth: pxToDp(1.5),
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            height: pxToDp(110),
           }}
         >
-          <View style={{ height: pxToDp(100), width: pxToDp(100) }}>
+          <View style={{ height: pxToDp(90), width: pxToDp(90) }}>
             <Image
-              source={{ uri: AVATAR_URI + item.stImg }}
+              source={{ uri: AVATAR_URI + item.imgUrl }}
               style={{ width: '100%', height: '100%', borderRadius: pxToDp(3) }}
             />
           </View>
-          <View style={{ paddingLeft: pxToDp(6), width: pxToDp(250) }}>
+          <View
+            style={{
+              paddingLeft: pxToDp(6),
+              alignItems: 'flex-start',
+              flexDirection: 'column',
+            }}
+          >
             <View
               style={{
-                height: pxToDp(23),
-                overflow: 'hidden',
-                justifyContent: 'center',
+                height: pxToDp(20),
+                width: '100%',
+                alignContent: 'center',
               }}
             >
               <Text
                 style={{
-                  fontSize: pxToDp(15),
+                  fontSize: pxToDp(16),
                   fontWeight: '700',
                   color: '#333',
                 }}
               >
-                {item.stTitle}
+                {item.title}
               </Text>
             </View>
-
             <View
               style={{
                 height: pxToDp(20),
@@ -86,69 +117,94 @@ const ActivityPage = () => {
                   color: '#222',
                 }}
               >
-                {item.stCrowd}
+                {item.signWay}
               </Text>
             </View>
 
             {/* 活动时间 */}
             <View style={{ marginTop: pxToDp(3), marginBottom: pxToDp(3) }}>
-              <Text style={{ color: '#666', fontSize: pxToDp(14) }}>
-                <Text>{moment(item.stStartTime).format('YYYY-MM-DD')}</Text>
-                <Text> —— </Text>
-                <Text>{moment(item.stEndTime).format('YYYY-MM-DD')}</Text>
+              <Text style={{ color: '#666', fontSize: pxToDp(13) }}>
+                <Text>{moment(item.startTime).format('YYYY-MM-DD HH:mm:ss')}</Text>
+                <Text> ~ </Text>
+                <Text>{moment(item.endTime).format('YYYY-MM-DD HH:mm:ss')}</Text>
               </Text>
             </View>
-
             <View style={{ flexDirection: 'row' }}>
-              {(item.stCrowd == userInfo.fenyuan || item.stCrowd == item.stOrganization || item.stCrowd == '全校') &&
-              item.stStatus == 3 ? (
-                <Text
-                  style={{
-                    color: '#f58220',
-                    borderWidth: pxToDp(1),
-                    borderRadius: pxToDp(3),
-                    borderColor: '#f58220',
-                    paddingLeft: pxToDp(2),
-                    textAlignVertical: 'center',
-                    fontSize: pxToDp(12),
-                  }}
-                >
-                  可报名
-                </Text>
-              ) : (
-                <Text
-                  style={{
-                    color: '#d71345',
-                    borderWidth: pxToDp(1),
-                    borderRadius: pxToDp(3),
-                    borderColor: '#d71345',
-                    paddingLeft: pxToDp(2),
-                    fontSize: pxToDp(12),
-                    textAlignVertical: 'center',
-                  }}
-                >
-                  不可报名
-                </Text>
-              )}
-              <Text
-                style={{
-                  fontSize: pxToDp(14),
-                  color: '#666',
-                  marginLeft: pxToDp(6),
-                }}
-              >
-                可参与{item.stCanNumber}人
-              </Text>
-
-              <Text
-                style={{
-                  color: '#ef4136',
-                  paddingLeft: pxToDp(40),
-                  fontWeight: '600',
-                }}
-              >
-                {item.stStatus == 5 ? '已结束' : item.stStatus == 4 ? '已开始' : '未开始'}
-              </Text>
+              {(function () {
+                let Element: JSX.Element = <></>;
+                console.log(item.canState);
+                switch (item.canState) {
+                  case 0:
+                    Element = (
+                      <Text
+                        style={{
+                          color: '#d71345',
+                          borderWidth: pxToDp(1),
+                          borderRadius: pxToDp(3),
+                          borderColor: '#d71345',
+                          paddingLeft: pxToDp(2),
+                          fontSize: pxToDp(12),
+                          textAlignVertical: 'center',
+                        }}
+                      >
+                        不可报名
+                      </Text>
+                    );
+                    break;
+                  case 1:
+                    Element = (
+                      <Text
+                        style={{
+                          color: '#f58220',
+                          borderWidth: pxToDp(1),
+                          borderRadius: pxToDp(3),
+                          borderColor: '#f58220',
+                          paddingLeft: pxToDp(2),
+                          textAlignVertical: 'center',
+                          fontSize: pxToDp(12),
+                        }}
+                      >
+                        可报名
+                      </Text>
+                    );
+                    break;
+                  case 2:
+                    Element = (
+                      <Text
+                        style={{
+                          color: '#f58220',
+                          borderWidth: pxToDp(1),
+                          borderRadius: pxToDp(3),
+                          borderColor: '#f58220',
+                          paddingLeft: pxToDp(2),
+                          textAlignVertical: 'center',
+                          fontSize: pxToDp(12),
+                        }}
+                      >
+                        可报名
+                      </Text>
+                    );
+                    break;
+                  case 3:
+                    Element = (
+                      <Text
+                        style={{
+                          color: '#f58220',
+                          borderWidth: pxToDp(1),
+                          borderRadius: pxToDp(3),
+                          borderColor: '#f58220',
+                          paddingLeft: pxToDp(2),
+                          textAlignVertical: 'center',
+                          fontSize: pxToDp(12),
+                        }}
+                      >
+                        可报名
+                      </Text>
+                    );
+                    break;
+                }
+                return Element;
+              })()}
             </View>
           </View>
         </View>
@@ -156,20 +212,6 @@ const ActivityPage = () => {
     );
   };
 
-  const onEndReachedHandler = () => {
-    // page++;
-    const changeData = { page: sendData.page + 1, size: 10 };
-    // getActivityData(changeData).then((data: activityDataType) => {
-    //   if (activityDataList) {
-    //     setActivityDataList([...activityDataList, ...data.list]);
-    //   }
-    // });
-    setSendData(changeData);
-    // getActivityData()
-    // const result = await this.getActivityData({ page: page, size: 10 });
-    // const arr = [...activityDataList, ...result.data.list];
-    // this.setState({ activityDataList: arr });
-  };
   return (
     <View style={{ backgroundColor: bgColordise, flex: 1 }}>
       <View style={{ backgroundColor: '#2a84ff' }}>
@@ -191,7 +233,7 @@ const ActivityPage = () => {
       </View>
 
       <ActivityTabBar userInfo={userInfo} />
-      <View style={{ flex: 1, marginTop: pxToDp(10) }}>
+      <View style={{ flex: 1, marginTop: pxToDp(10), marginBottom: pxToDp(30) }}>
         <View
           style={{
             height: pxToDp(50),
@@ -217,7 +259,7 @@ const ActivityPage = () => {
             <FlatList
               data={activityDataList}
               renderItem={renderItem}
-              keyExtractor={(item) => item.stId.toString()}
+              keyExtractor={(item) => item.id.toString()}
               onEndReached={onEndReachedHandler}
             />
           </SafeAreaView>
@@ -225,6 +267,4 @@ const ActivityPage = () => {
       </View>
     </View>
   );
-};
-
-export default ActivityPage;
+}

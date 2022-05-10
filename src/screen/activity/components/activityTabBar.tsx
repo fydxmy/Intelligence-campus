@@ -4,10 +4,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import XmyIconFont from '../../../components/IconFont';
 import { pxToDp } from '../../../utils';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { userInfoType } from '../../../types/requsetDataType';
+import { UserInfoType } from '../../TabBar/data';
 
 interface ActivityTabBarPropsType {
-  userInfo: Partial<userInfoType>;
+  userInfo: Partial<UserInfoType>;
 }
 export const ActivityTabBar = (props: ActivityTabBarPropsType) => {
   const navigation = useNavigation<CompositeNavigationProp<any, any>>();

@@ -3,7 +3,6 @@ export type StudyStatusType = {
   className: string;
   collegeId: number;
   collegeName: string;
-  createdAt: Date;
   dormitory: string;
   gender: number;
   id: number;
@@ -11,5 +10,6 @@ export type StudyStatusType = {
   nativePlace: string;
   phoneNumber: string;
   studentId: string;
-  updatedAt: Date;
+  updatedAt: string;
+  createdAt: string;
 };
