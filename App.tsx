@@ -14,7 +14,7 @@ export default () => {
     timer.current = setTimeout(() => {
       // 隐藏启动页
       SplashScreen.hide();
-    }, 2000);
+    }, 1);
     return () => {
       timer.current && clearTimeout(timer.current);
     };

@@ -38,8 +38,9 @@ export const ActivityTabBar = (props: ActivityTabBarPropsType) => {
       title: '活动申请',
       iconName: 'jgvr',
       onPress: () => {
-        navigation.navigate('ApplyActivityPage', {
-          userInfo: props.userInfo,
+        navigation.navigate('StaticWebView', {
+          pageName: '活动申请',
+          uri: '/ApplyActivity',
         });
       },
       iconStyle: { color: '#2a84ff' },

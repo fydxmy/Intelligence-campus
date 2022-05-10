@@ -10,6 +10,7 @@ import { UserInfoEdit, StudyStatus, Setpage } from '../screen/My/screen';
 // import { Setpage, , UserInfo, UserInfoEdit } from './pages/My/pages';
 import { XmyWebView } from '../screen/webView';
 import DynamicWebView from '../screen/webView/DynamicWebView';
+import StaticWebView from '../screen/webView/StaticWebView';
 
 import {
   BathPage,
@@ -31,10 +32,44 @@ import { SetNickName, SetGender, SetSelfIntroduction, SetAvator } from '../scree
 
 const Stack = createStackNavigator();
 export default function Nav() {
+  const NavRouter = {
+    Register,
+    Login,
+    TabBar,
+    UserInfo,
+    UserInfoEdit,
+    SetNickName,
+    SetSelfIntroduction,
+    SetAvator,
+    Setpage,
+    SetGender,
+    StudyStatus,
+    BathPage,
+    LibraryPage,
+    MalfunctionPage,
+    PayCenterPage,
+    ServiceCenterPage,
+    WasherPage,
+    XmyWebView,
+    DynamicWebView,
+    StaticWebView,
+  };
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="TabBar">
-        <Stack.Screen name="Login" component={Login} />
+        {Object.keys(NavRouter).map((item, index) => {
+          return (
+            <Stack.Screen
+              name={item}
+              key={index}
+              component={NavRouter[item]}
+              options={{
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+              }}
+            />
+          );
+        })}
+        {/* <Stack.Screen name="Login" component={Login} />
         <Stack.Screen
           name="Register"
           component={Register}
@@ -42,91 +77,23 @@ export default function Nav() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
         />
-        <Stack.Screen name="TabBar" component={TabBar} />
-        <Stack.Screen
+        <Stack.Screen name="TabBar" component={TabBar} /> */}
+        {/* <Stack.Screen
           name="XmyWebView"
           component={XmyWebView}
           options={{
             gestureEnabled: false,
           }}
-        />
-        <Stack.Screen
+        /> */}
+        {/* <Stack.Screen
           name="DynamicWebView"
           component={DynamicWebView}
           options={{
             gestureEnabled: false,
           }}
-        />
+        /> */}
 
-        <Stack.Screen name="BathPage" component={BathPage} />
-        <Stack.Screen name="LibraryPage" component={LibraryPage} />
-        <Stack.Screen name="MalfunctionPage" component={MalfunctionPage} />
-        <Stack.Screen name="PayCenterPage" component={PayCenterPage} />
-        <Stack.Screen name="ServiceCenterPage" component={ServiceCenterPage} />
-        <Stack.Screen name="WasherPage" component={WasherPage} />
-        <Stack.Screen
-          name="UserInfoEdit"
-          component={UserInfoEdit}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }}
-        />
-        <Stack.Screen
-          name="SetNickName"
-          component={SetNickName}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }}
-        />
-        <Stack.Screen
-          name="SetGender"
-          component={SetGender}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }}
-        />
-        <Stack.Screen
-          name="SetSelfIntroduction"
-          component={SetSelfIntroduction}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }}
-        />
-        <Stack.Screen
-          name="SetAvator"
-          component={SetAvator}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }}
-        />
-        <Stack.Screen
-          name="UserInfo"
-          component={UserInfo}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }}
-        />
-        <Stack.Screen
-          name="StudyStatus"
-          component={StudyStatus}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }}
-        />
-
-        <Stack.Screen
-          name="Setpage"
-          component={Setpage}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }}
-        />
         {/*
-
-
-
-
-
         <Stack.Screen
           name="ActivityDetailsPage"
           component={ActivityDetailsPage}

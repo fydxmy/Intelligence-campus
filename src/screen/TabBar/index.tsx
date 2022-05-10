@@ -3,7 +3,7 @@ import { View, StatusBar, BackHandler, ToastAndroid } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 import { Home } from '../home';
 import { My } from '../My';
-// import ActivityPage from '../activity';
+import ActivityPage from '../activity';
 import IconFont from '../../components/IconFont';
 import { pxToDp } from '../../utils';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -36,7 +36,7 @@ export const TabBar = (props: TabBarPropsType) => {
       title: '素拓',
       renderIcon: () => <IconFont name="sutuo" style={{ fontSize: pxToDp(25), color: '#666666' }} />,
       renderSelectedIcon: () => <IconFont name="sutuo" style={{ fontSize: pxToDp(25), color: '#1678ff' }} />,
-      component: <View />,
+      component: <ActivityPage />,
       onPress: () => setSelectedTab('activity'),
     },
     {

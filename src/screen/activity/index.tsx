@@ -1,32 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StatusBar, TouchableWithoutFeedback, SafeAreaView, FlatList, Image } from 'react-native';
 import { bgColordise } from '../../res/colorMap';
-import { pxToDp, useFetchHttp } from '../../utils';
+import { pxToDp } from '../../utils'; // useFetchHttp
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { ACTIVITYLIST_URL, AVATAR_URI } from '../../utils/pathMap';
+// import { ACTIVITYLIST_URL, AVATAR_URI } from '../../utils/pathMap';
+import { AVATAR_URI } from '../../config';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { storeUserInfo } from '../../store/userInfo.slice';
 import { activityDataType } from '../../types/requsetDataType';
-import { ActivityTabBar } from './components/activityTabBar';
+import { ActivityTabBar } from './components/ActivityTabBar';
 
 const statusBarHeight = StatusBar.currentHeight;
 const ActivityPage = () => {
   const navigation = useNavigation<CompositeNavigationProp<any, any>>();
   const userInfo = useSelector(storeUserInfo).useInfoData;
   const [activityDataList, setActivityDataList] = useState<activityDataType['list'] | undefined>(undefined);
-  const client = useFetchHttp();
+  // const client = useFetchHttp();
   const [sendData, setSendData] = useState({ page: 1, size: 10 });
   useEffect(() => {
-    getActivityData({ page: 1, size: 10 }).then((data: activityDataType) => {
-      if (!activityDataList) {
-        setActivityDataList(data.list);
-      }
-    });
+    // getActivityData({ page: 1, size: 10 }).then((data: activityDataType) => {
+    //   if (!activityDataList) {
+    //     setActivityDataList(data.list);
+    //   }
+    // });
   }, []);
 
-  const getActivityData = (sendData: { page: number; size: number }) =>
-    client(ACTIVITYLIST_URL, { reqMethod: 'GET', data: sendData });
+  // const getActivityData = (sendData: { page: number; size: number }) =>
+  //   client(ACTIVITYLIST_URL, { reqMethod: 'GET', data: sendData });
   const renderItem = ({ item }: { item: activityDataType['list'][0] }) => {
     return (
       <TouchableWithoutFeedback
@@ -158,11 +159,11 @@ const ActivityPage = () => {
   const onEndReachedHandler = () => {
     // page++;
     const changeData = { page: sendData.page + 1, size: 10 };
-    getActivityData(changeData).then((data: activityDataType) => {
-      if (activityDataList) {
-        setActivityDataList([...activityDataList, ...data.list]);
-      }
-    });
+    // getActivityData(changeData).then((data: activityDataType) => {
+    //   if (activityDataList) {
+    //     setActivityDataList([...activityDataList, ...data.list]);
+    //   }
+    // });
     setSendData(changeData);
     // getActivityData()
     // const result = await this.getActivityData({ page: page, size: 10 });

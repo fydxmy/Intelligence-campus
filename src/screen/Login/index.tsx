@@ -26,7 +26,6 @@ export default function Login(props: LoginPropsType) {
         const token = res.token;
         dispatch(authTokenSlice.actions.setToken(token));
         storeData(ASauthToken, token).then(() => {
-          Toast.success('请求成功');
           props.navigation.navigate('TabBar');
         });
       })

@@ -1,0 +1,1 @@
+{"version":3,"sources":["<input css 1>"],"names":[],"mappings":"AAAA,gBAGE,UAAW,CACX,WACF,CAEA,MACE,qBAAsB,CACtB,UAAc,CACd,aAAc,CACd,qBACF","file":"main.5db226d3.chunk.css","sourcesContent":["html,\nbody,\n#root {\n  width: 100%;\n  height: 100%;\n}\n\n#root {\n  font-size: 1.013333rem;\n  color: #333333;\n  margin: 0 auto;\n  background-color: #fff;\n}"]}
