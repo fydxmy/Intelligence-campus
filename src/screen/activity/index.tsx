@@ -5,8 +5,6 @@ import { pxToDp } from '../../utils';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { AVATAR_URI } from '../../config';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
-import { storeUserInfo } from '../../store/userInfo.slice';
 import { ActivityTabBar } from './components/ActivityTabBar';
 import { queryActivity } from './services';
 import { ActivityListItemType } from './data';
@@ -17,16 +15,15 @@ type NewActivityListItemType = ActivityListItemType & {
 const statusBarHeight = StatusBar.currentHeight;
 export default function ActivityPage() {
   const navigation = useNavigation<CompositeNavigationProp<any, any>>();
-  const userInfo = useSelector(storeUserInfo);
   const [activityDataList, setActivityDataList] = useState<NewActivityListItemType[]>([]);
   const pageNumberValue = useRef(1);
   useEffect(() => {
-    queryActivity({ pageNumber: 1, pageSize: 10, stStatus: 1 }).then((res) => {
+    queryActivity({ pageNumber: 1, pageSize: 10, stStatus: 2 }).then((res) => {
       setActivityDataList(currentStateTran(res.list));
     });
   }, []);
   const onEndReachedHandler = () => {
-    queryActivity({ pageNumber: pageNumberValue.current + 1, pageSize: 10, stStatus: 1 }).then((res) => {
+    queryActivity({ pageNumber: pageNumberValue.current + 1, pageSize: 10, stStatus: 2 }).then((res) => {
       pageNumberValue.current = pageNumberValue.current + 1;
       setActivityDataList(currentStateTran([...activityDataList, ...res.list]));
     });
@@ -37,14 +34,14 @@ export default function ActivityPage() {
       const startTimeTamp = new Date(item.startTime).getTime();
       const endTimeTamp = new Date(item.endTime).getTime();
       let canState = 0; // 0 不可参与、 1可以报名、2可签到、3、可签退
-      // 86400000
-      if (startTimeTamp - 86400000 > currentTimeTamp) {
+      // 3600000
+      if (startTimeTamp - 3600000 * 4 > currentTimeTamp) {
         canState = 1;
       }
-      if (startTimeTamp - 1800 > currentTimeTamp || startTimeTamp + 1800 < currentTimeTamp) {
+      if (startTimeTamp - 3600000 > currentTimeTamp || startTimeTamp + 3600000 < currentTimeTamp) {
         canState = 2;
       }
-      if (endTimeTamp - 1800 > currentTimeTamp || endTimeTamp + 1800 < currentTimeTamp) {
+      if (endTimeTamp - 3600000 > currentTimeTamp || endTimeTamp + 3600000 < currentTimeTamp) {
         canState = 3;
       }
       return { ...item, canState };
@@ -54,7 +51,7 @@ export default function ActivityPage() {
     return (
       <TouchableWithoutFeedback
         onPress={() => {
-          navigation.navigate('ActivityDetailsPage', { detailsInfo: item });
+          navigation.navigate('ActivityDetails', { detailsInfo: item });
         }}
       >
         <View
@@ -132,7 +129,6 @@ export default function ActivityPage() {
             <View style={{ flexDirection: 'row' }}>
               {(function () {
                 let Element: JSX.Element = <></>;
-                console.log(item.canState);
                 switch (item.canState) {
                   case 0:
                     Element = (
@@ -214,7 +210,7 @@ export default function ActivityPage() {
 
   return (
     <View style={{ backgroundColor: bgColordise, flex: 1 }}>
-      <View style={{ backgroundColor: '#2a84ff' }}>
+      <View style={{ backgroundColor: '#ffffff' }}>
         <View
           style={{
             marginTop: statusBarHeight,
@@ -228,12 +224,12 @@ export default function ActivityPage() {
         >
           <Text></Text>
           <Text></Text>
-          <Text style={{ fontSize: pxToDp(30), color: '#fff' }}>+</Text>
+          {/* <Text style={{ fontSize: pxToDp(30), color: '#fff' }}>+</Text> */}
         </View>
       </View>
 
-      <ActivityTabBar userInfo={userInfo} />
-      <View style={{ flex: 1, marginTop: pxToDp(10), marginBottom: pxToDp(30) }}>
+      <ActivityTabBar />
+      <View style={{ flex: 1, marginTop: pxToDp(10) }}>
         <View
           style={{
             height: pxToDp(50),

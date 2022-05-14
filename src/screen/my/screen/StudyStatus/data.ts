@@ -1,4 +1,5 @@
 export type StudyStatusType = {
+  name: string;
   classId: number;
   className: string;
   collegeId: number;

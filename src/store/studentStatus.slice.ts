@@ -9,7 +9,7 @@ export const studentStatusSlice = createSlice({
   name: 'studentStatusSlice',
   initialState,
   reducers: {
-    setStudentStatus(state, action) {
+    setStudentStatus(state: any, action: any) {
       state.studentStatus = action.payload;
     },
   },

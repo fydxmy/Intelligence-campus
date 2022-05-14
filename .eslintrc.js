@@ -16,5 +16,6 @@ module.exports = {
     'react-native/no-inline-styles': 'off',
     'react/self-closing-comp': 'off',
     'no-shadow': 'off',
+    'no-undef': 'off',
   },
 };

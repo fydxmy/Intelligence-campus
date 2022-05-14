@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { pxToDp } from '../../../utils';
 import InfoList from './infoList';
 
 const renderScene = SceneMap({
@@ -27,6 +28,7 @@ export function HomeTabs() {
       renderTabBar={(props) => (
         <TabBar
           {...props}
+          labelStyle={{ fontSize: pxToDp(16), fontWeight: '600' }}
           onTabPress={({ route }) => {
             switch (route.key) {
               case 'first':

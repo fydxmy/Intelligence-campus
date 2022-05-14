@@ -1,4 +1,4 @@
-export * from './activityDetailsPage';
-export * from './auditDetailsPage';
+export * from './ActivityDetails';
+export * from './AuditDetails';
 export * from './applyActivityPage';
-export * from './auditActivityPage';
+export * from './AuditActivity';

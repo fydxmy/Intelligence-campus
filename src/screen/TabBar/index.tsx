@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, StatusBar, BackHandler, ToastAndroid } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
+
 import { Home } from '../home';
 import { My } from '../My';
 import ActivityPage from '../activity';
@@ -15,7 +16,8 @@ import { authTokenSlice } from '../../store/authToken.slice';
 import { userInfoSlice } from '../../store/userInfo.slice';
 import { queryStudentStatus } from '../My/screen/StudyStatus/services';
 import { studentStatusSlice } from '../../store/studentStatus.slice';
-
+import base64 from 'base-64';
+import { authDataSlice } from '../../store/authData.slice';
 interface TabBarPropsType extends NativeStackScreenProps<any, any> {}
 
 export const TabBar = (props: TabBarPropsType) => {
@@ -47,7 +49,6 @@ export const TabBar = (props: TabBarPropsType) => {
   ]);
   let lastBackPressed = useRef<number>(0);
   const [selectedTab, setSelectedTab] = useState('home');
-  const StatusBarColor = ['my'].find((item) => item === selectedTab);
   const dispatch = useDispatch();
   useEffect(() => {
     authToken();
@@ -62,12 +63,14 @@ export const TabBar = (props: TabBarPropsType) => {
   const authToken = async () => {
     // 获取token
     getData(ASauthToken).then((token) => {
-      dispatch(authTokenSlice.actions.setToken(token));
+      dispatch(authTokenSlice.actions.setToken(token || ''));
       verifyToken()
         .then((res) => {
           dispatch(userInfoSlice.actions.setUserInfo(res.userInfo));
           queryStudentStatus().then((res) => {
             dispatch(studentStatusSlice.actions.setStudentStatus(res.studentStatus));
+            // console.log(, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+            dispatch(authDataSlice.actions.setAuthData(JSON.parse(base64.decode(token?.split('.')[1] || ''))));
           });
         })
         .catch((res) => {
@@ -94,7 +97,7 @@ export const TabBar = (props: TabBarPropsType) => {
       <StatusBar
         backgroundColor="transparent"
         translucent={true}
-        barStyle={StatusBarColor ? 'dark-content' : 'light-content'}
+        barStyle={['my', 'activity'].find((item) => item === selectedTab) ? 'dark-content' : 'light-content'}
       />
       <TabNavigator tabBarStyle={{ backgroundColor: '#fafbff', height: pxToDp(56) }}>
         {tabBarList.current.map((item, index) => {

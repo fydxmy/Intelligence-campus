@@ -4,31 +4,18 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import XmyIconFont from '../../../components/IconFont';
 import { pxToDp } from '../../../utils';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { UserInfoType } from '../../TabBar/data';
+import { useSelector } from 'react-redux';
+import { storeAuthData } from '../../../store/authData.slice';
 
-interface ActivityTabBarPropsType {
-  userInfo: Partial<UserInfoType>;
-}
-export const ActivityTabBar = (props: ActivityTabBarPropsType) => {
+interface Props {}
+export const ActivityTabBar = () => {
   const navigation = useNavigation<CompositeNavigationProp<any, any>>();
+  const authData = useSelector(storeAuthData);
+  console.log(authData, 'bbb');
   const sutuoBarList = [
     {
       id: 1,
-      title: '学分申请',
-      iconName: 'jgvr',
-      onPress: () => {},
-      iconStyle: { color: '#2a84ff' },
-    },
-    {
-      id: 4,
-      title: '参与活动',
-      iconName: 'jgvr',
-      onPress: () => {},
-      iconStyle: { color: '#2a84ff' },
-    },
-    {
-      id: 5,
-      title: '错过活动',
+      title: '获得分数',
       iconName: 'jgvr',
       onPress: () => {},
       iconStyle: { color: '#2a84ff' },
@@ -49,10 +36,9 @@ export const ActivityTabBar = (props: ActivityTabBarPropsType) => {
       id: 3,
       title: '活动审核',
       iconName: 'jgvr',
+      hiedden: authData.role !== 2,
       onPress: () => {
-        navigation.navigate('AuditActivityPage', {
-          userInfo: props.userInfo,
-        });
+        navigation.navigate('AuditActivity');
       },
       iconStyle: { color: '#2a84ff' },
     },
@@ -72,18 +58,24 @@ export const ActivityTabBar = (props: ActivityTabBarPropsType) => {
       }}
     >
       {sutuoBarList.map((item) => (
-        <TouchableOpacity onPress={item.onPress} key={item.id}>
-          <View
-            style={{
-              width: pxToDp(68),
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <XmyIconFont name={item.iconName} style={{ fontSize: pxToDp(30), ...item.iconStyle }} />
-            <Text style={{ fontSize: pxToDp(13) }}>{item.title}</Text>
-          </View>
-        </TouchableOpacity>
+        <View key={item.id}>
+          {item.hiedden ? undefined : (
+            <>
+              <TouchableOpacity onPress={item.onPress}>
+                <View
+                  style={{
+                    width: pxToDp(68),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <XmyIconFont name={item.iconName} style={{ fontSize: pxToDp(30), ...item.iconStyle }} />
+                  <Text style={{ fontSize: pxToDp(13) }}>{item.title}</Text>
+                </View>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
       ))}
     </View>
   );

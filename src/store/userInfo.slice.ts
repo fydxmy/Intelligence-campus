@@ -20,7 +20,7 @@ export const userInfoSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo(
-      state,
+      state: any,
       action: {
         payload: initialStateType['userInfo'];
         type: string;

@@ -22,6 +22,7 @@ import {
 } from '../screen/home/pages';
 
 import { SetNickName, SetGender, SetSelfIntroduction, SetAvator } from '../screen/My/screen/UserInfoEdit/screen';
+import { ActivityDetails, AuditActivity, AuditDetails } from '../screen/activity/screen';
 
 // import {
 //   AuditDetailsPage,
@@ -53,6 +54,9 @@ export default function Nav() {
     XmyWebView,
     DynamicWebView,
     StaticWebView,
+    ActivityDetails,
+    AuditActivity,
+    AuditDetails,
   };
   return (
     <NavigationContainer>

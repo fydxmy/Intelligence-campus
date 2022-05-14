@@ -12,3 +12,15 @@ export function queryActivity(data: {
     data,
   });
 }
+
+export function auditActivity(data: {
+  auditId: number;
+  auditName: string;
+  stStatus: number;
+  id: number;
+}): Promise<any> {
+  return fetchHttp(`${proxyPrefix}sutuo/auditActivity`, {
+    reqMethod: 'POST',
+    data,
+  });
+}
