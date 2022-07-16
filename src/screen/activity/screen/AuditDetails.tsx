@@ -1,5 +1,5 @@
 import { Text, View, SafeAreaView, ScrollView, Image, DeviceEventEmitter } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import XmyNav from '../../../components/xmyNav';
 import { bgColordise } from '../../../res/colorMap';
 import { pxToDp } from '../../../utils/stylesKits';

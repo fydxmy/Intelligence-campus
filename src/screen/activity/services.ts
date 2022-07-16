@@ -24,3 +24,15 @@ export function auditActivity(data: {
     data,
   });
 }
+export function canActivity(data: { title: string; grade: number; state: number; activityId: number }): Promise<any> {
+  return fetchHttp(`${proxyPrefix}sutuo/canActivity`, {
+    reqMethod: 'POST',
+    data,
+  });
+}
+export function queryActivityGrade(data: { activityId?: number }): Promise<any> {
+  return fetchHttp(`${proxyPrefix}sutuo/queryActivityGrade`, {
+    reqMethod: 'POST',
+    data,
+  });
+}

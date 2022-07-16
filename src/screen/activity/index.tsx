@@ -1,5 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, View, StatusBar, TouchableWithoutFeedback, SafeAreaView, FlatList, Image } from 'react-native';
+import {
+  Text,
+  View,
+  StatusBar,
+  TouchableWithoutFeedback,
+  SafeAreaView,
+  FlatList,
+  Image,
+  DeviceEventEmitter,
+  EmitterSubscription,
+} from 'react-native';
 import { bgColordise } from '../../res/colorMap';
 import { pxToDp } from '../../utils';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
@@ -17,33 +27,49 @@ export default function ActivityPage() {
   const navigation = useNavigation<CompositeNavigationProp<any, any>>();
   const [activityDataList, setActivityDataList] = useState<NewActivityListItemType[]>([]);
   const pageNumberValue = useRef(1);
+  const subscription = useRef<EmitterSubscription | undefined>();
   useEffect(() => {
+    queryActivityHandler();
+    subscription.current = DeviceEventEmitter.addListener('refreshActivity', () => {
+      queryActivityHandler();
+    });
+    return () => {
+      if (subscription.current) {
+        subscription.current.remove();
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const queryActivityHandler = () => {
     queryActivity({ pageNumber: 1, pageSize: 10, stStatus: 2 }).then((res) => {
       setActivityDataList(currentStateTran(res.list));
     });
-  }, []);
+  };
   const onEndReachedHandler = () => {
     queryActivity({ pageNumber: pageNumberValue.current + 1, pageSize: 10, stStatus: 2 }).then((res) => {
       pageNumberValue.current = pageNumberValue.current + 1;
       setActivityDataList(currentStateTran([...activityDataList, ...res.list]));
     });
   };
+
   const currentStateTran = (data: ActivityListItemType[]) => {
-    const currentTimeTamp = new Date().getTime();
+    const currentTimeTamp = Number(moment(new Date()).format('X'));
     return data.map((item) => {
-      const startTimeTamp = new Date(item.startTime).getTime();
-      const endTimeTamp = new Date(item.endTime).getTime();
+      const startTimeTamp = Number(moment(item.startTime).format('X'));
+      const endTimeTamp = Number(moment(item.endTime).format('X'));
       let canState = 0; // 0 不可参与、 1可以报名、2可签到、3、可签退
       // 3600000
-      if (startTimeTamp - 3600000 * 4 > currentTimeTamp) {
-        canState = 1;
-      }
-      if (startTimeTamp - 3600000 > currentTimeTamp || startTimeTamp + 3600000 < currentTimeTamp) {
-        canState = 2;
-      }
-      if (endTimeTamp - 3600000 > currentTimeTamp || endTimeTamp + 3600000 < currentTimeTamp) {
+      if (endTimeTamp - 3600 < currentTimeTamp && currentTimeTamp < endTimeTamp + 7200) {
         canState = 3;
       }
+      if (startTimeTamp < currentTimeTamp && currentTimeTamp < startTimeTamp + 3600) {
+        canState = 2;
+      }
+      if (startTimeTamp - 3600 * 4 < currentTimeTamp && currentTimeTamp < startTimeTamp) {
+        canState = 1;
+      }
+
+      console.log(canState, startTimeTamp - 3600 * 4, currentTimeTamp, startTimeTamp, endTimeTamp);
       return { ...item, canState };
     });
   };
@@ -177,7 +203,7 @@ export default function ActivityPage() {
                           fontSize: pxToDp(12),
                         }}
                       >
-                        可报名
+                        可签到
                       </Text>
                     );
                     break;
@@ -194,7 +220,7 @@ export default function ActivityPage() {
                           fontSize: pxToDp(12),
                         }}
                       >
-                        可报名
+                        可签退
                       </Text>
                     );
                     break;
@@ -222,8 +248,7 @@ export default function ActivityPage() {
             paddingRight: pxToDp(16),
           }}
         >
-          <Text></Text>
-          <Text></Text>
+          <Text style={{ fontSize: pxToDp(20) }}>素质拓展活动</Text>
           {/* <Text style={{ fontSize: pxToDp(30), color: '#fff' }}>+</Text> */}
         </View>
       </View>

@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "^1.6.2",
     "@types/react-native-snap-carousel": "^3.8.4",
     "@types/react-native-tab-navigator": "^0.3.4",
+    "ahooks": "^3.5.2",
     "axios": "^0.21.4",
     "base-64": "^1.0.0",
     "lodash": "^4.17.21",

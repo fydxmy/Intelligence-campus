@@ -16,8 +16,10 @@ export const ActivityTabBar = () => {
     {
       id: 1,
       title: '获得分数',
-      iconName: 'jgvr',
-      onPress: () => {},
+      iconName: 'chengji',
+      onPress: () => {
+        navigation.navigate('ActivityGrade');
+      },
       iconStyle: { color: '#2a84ff' },
     },
     {
@@ -35,7 +37,7 @@ export const ActivityTabBar = () => {
     {
       id: 3,
       title: '活动审核',
-      iconName: 'jgvr',
+      iconName: 'xueji',
       hiedden: authData.role !== 2,
       onPress: () => {
         navigation.navigate('AuditActivity');

@@ -38,6 +38,7 @@ export function AuditActivity(props: Props) {
       if (subscription.current) {
         subscription.current.remove();
       }
+      DeviceEventEmitter.emit('refreshActivity');
     };
   }, []);
   const queryActivityHandler = () => {

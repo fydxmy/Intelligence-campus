@@ -9,6 +9,7 @@ import { Button } from 'react-native-elements';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ActivityListItemType } from '../data';
 import { AVATAR_URI } from '../../../config';
+import { canActivity, queryActivityGrade } from '../services';
 
 const labels = ['报名', '签到', '签退', '活动结束'];
 const customStyles = {
@@ -45,9 +46,12 @@ export function ActivityDetails(props: Props) {
   const { detailsInfo } = props.route.params;
   const [activityStatus, setActivityStatus] = useState(0); // 0报名 1已报名 2签到 3签退
   const [hintStr, setHintStr] = useState('等待报名');
-
+  const [activityGrade, setActivityGrade] = useState<any>();
   useEffect(() => {
     isStatusHandler();
+    queryActivityGrade({ activityId: detailsInfo.id }).then((res) => {
+      setActivityGrade(res.list[0]);
+    });
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -55,46 +59,38 @@ export function ActivityDetails(props: Props) {
   const startTimeTamp = Number(moment(detailsInfo.startTime).format('X'));
   const endTimeTamp = Number(moment(detailsInfo.endTime).format('X'));
   const isStatusHandler = async () => {
-    console.log(currentTimeTamp, startTimeTamp, detailsInfo.startTime, endTimeTamp);
-    if (startTimeTamp - 3600 * 4 > currentTimeTamp) {
-      setActivityStatus(1);
+    if (currentTimeTamp > endTimeTamp + 7200) {
+      setActivityStatus(4);
+      setHintStr('活动已结束');
     }
-    if (startTimeTamp - 3600 > currentTimeTamp || startTimeTamp + 3600 < currentTimeTamp) {
-      setActivityStatus(2);
-    }
-    if (endTimeTamp - 3600 > currentTimeTamp || endTimeTamp + 3600 < currentTimeTamp) {
+    if (endTimeTamp - 3600 < currentTimeTamp && currentTimeTamp < endTimeTamp + 7200) {
       setActivityStatus(3);
+      setHintStr('签退活动');
     }
-    // const currentTime = new Date().getTime();
-    // if (currentTime < detailsInfo.stApplyStartTime) {
-    //   await setActivityStatus(0); // 不可报名
-    // } else if (currentTime < detailsInfo.stStartTime) {
-    //   await setActivityStatus(1); // 报名
-    // } else if (currentTime < detailsInfo.stStartTime + 3600000) {
-    //   await setActivityStatus(2); // 可签到
-    // } else if (currentTime < detailsInfo.stEndTime + 3600000 && currentTime > detailsInfo.stEndTime - 3600000) {
-    //   // 可签退
-    //   await setActivityStatus(3);
-    // } else if (currentTime > detailsInfo.stEndTime + 3600000) {
-    //   await setActivityStatus(4); // 已结束
-    // }
-    // if (ApplyStatus === 0 && activityStatus === 0) {
-    //   setHintStr('等待报名');
-    // } else if (ApplyStatus === 0 && activityStatus === 1) {
-    //   setHintStr('报名');
-    // } else if (ApplyStatus === 1 && activityStatus === 1) {
-    //   setHintStr('等待签退');
-    // } else if (ApplyStatus === 1 && activityStatus === 2) {
-    //   setHintStr('签到');
-    // } else if (ApplyStatus === 2 && activityStatus === 2) {
-    //   setHintStr('等待签退');
-    // } else if (ApplyStatus === 2 && activityStatus === 3) {
-    //   setHintStr('签退');
-    // } else if (activityStatus === 4) {
-    //   setHintStr('活动已结束');
-    // }
+    if (startTimeTamp < currentTimeTamp && currentTimeTamp < startTimeTamp + 3600) {
+      setActivityStatus(2);
+      setHintStr('签到活动');
+    }
+    if (startTimeTamp - 3600 * 4 < currentTimeTamp && currentTimeTamp < startTimeTamp) {
+      setActivityStatus(1);
+      setHintStr('参与活动');
+    }
+    if (currentTimeTamp < startTimeTamp - 3600 * 4) {
+      setActivityStatus(-1);
+    }
   };
-  const updateActivityInfo = () => {};
+  const updateActivityInfo = () => {
+    if (activityStatus === 1) {
+      canActivity({
+        title: detailsInfo.title,
+        grade: detailsInfo.grade,
+        state: activityStatus,
+        activityId: detailsInfo.id,
+      }).then((res) => {
+        console.log(res);
+      });
+    }
+  };
   return (
     <View style={{ flex: 1, backgroundColor: bgColordise }}>
       <View style={{ backgroundColor: '#2a84ff' }}>
@@ -300,6 +296,36 @@ export function ActivityDetails(props: Props) {
                   联系方式：
                 </Text>
                 <Text style={{ color: '#666', fontSize: pxToDp(15) }}>{detailsInfo.auditName}</Text>
+              </Text>
+            </View>
+            <View
+              style={{
+                marginLeft: pxToDp(12),
+                marginRight: pxToDp(12),
+                marginTop: pxToDp(10),
+                backgroundColor: '#fff',
+                borderRadius: pxToDp(5),
+                padding: pxToDp(10),
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: pxToDp(18),
+                  fontWeight: '600',
+                  color: '#333',
+                  marginBottom: pxToDp(6),
+                }}
+              >
+                活动状态
+              </Text>
+              <Text style={{ color: '#444', fontSize: pxToDp(16) }}>
+                {activityGrade?.state === 0
+                  ? '未签到'
+                  : activityGrade?.state === 1
+                  ? '已签到'
+                  : activityGrade?.state === 2
+                  ? '已签退'
+                  : '未报名'}
               </Text>
             </View>
 

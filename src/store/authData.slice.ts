@@ -35,7 +35,6 @@ export const authDataSlice = createSlice({
     },
   },
 });
-
 export const storeAuthData = (state: RootState) => {
   return state.authDataSlice.tokenData;
 };
